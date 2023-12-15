@@ -1,0 +1,27 @@
+
+    .minadd{
+        margin-bottom: 10px;
+    }
+    /* .minhr{
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        margin: 5px auto;
+    } */
+    .content-wrapper{
+        background-color: #fff!important;
+    }
+    .content-wrapper {
+        background: #F8F9FB;
+        box-shadow: 0 0 3px #ccc;
+        padding: 0;
+        /* width: 93%; */
+        margin: 0 auto;
+    }
+    .headermin{
+        text-decoration: underline;
+        text-transform: capitalize;
+         }
+        
+         .MuiBox-root.css-19kzrtu {
+            padding: 0;
+        }
