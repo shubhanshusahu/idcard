@@ -14,7 +14,7 @@ export function PostReq( paramQuery:string, data : any) {
 
 export function GetReq( paramQuery : string) {
     const res = axios.get(`${base}${paramQuery}`)
-    res.then(res => res)
+    res.then(res => console.log(res))
         .catch(e => alert('Something went wrong'+ e.message))
 
     return res;

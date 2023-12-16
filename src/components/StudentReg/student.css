@@ -7,6 +7,9 @@
         width: 100%;
         margin: 5px auto;
     } */
+    .heading{
+        font-weight: 400;
+    }
     .content-wrapper{
         background-color: #fff!important;
     }

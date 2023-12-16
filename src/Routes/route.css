@@ -1,7 +1,7 @@
 .overall{
     display: flex;
-    height: 100vh;
     flex-wrap: nowrap;
+    max-height: 100vh;
 }
 .rightpart{
     width: auto;
@@ -10,6 +10,7 @@
 height: auto;
 width: 100%;
 height: 100vh;
+overflow: scroll;
 }
 .useravtar{
     font-size: 25px;

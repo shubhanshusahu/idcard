@@ -32,7 +32,7 @@ export const SidebarData = [
   {
     title: 'Register Student',
     path: '/register',
-    icon: <img src="imag/school.png" className='imagesize'/>,
+    icon: <img src="imag/student2.png" className='imagesize'/>,
     cName: 'nav-textWithSubmenu',
     submenu:null,
     // submenu: [
@@ -52,23 +52,16 @@ export const SidebarData = [
   },
  
   {
-    title: 'Schools',
-    path: '/schools',
-    icon: <img src="imag/school.png" className='imagesize'/>,
-    cName: 'minnavtext',
-    submenu: null
-  },
-  {
     title: 'Teachers',
     path: '/teachers',
-    icon: <img src="imag/Teacher.png" className='imagesize'/>,
+    icon: <img src="imag/teachernew.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu: null
   },
   {
     title: 'Students',
     path: '/Students',
-    icon: <img src="imag/school.png" className='imagesize'/>,
+    icon: <img src="imag/student.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu: null
   },
@@ -82,7 +75,7 @@ export const SidebarData = [
   {
     title: 'Printing Cards',
     path: '/printing',
-    icon: <img src="imag/school.png" className='imagesize'/>,
+    icon: <img src="imag/print.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu:null,
   //   submenu: [
@@ -98,7 +91,7 @@ export const SidebarData = [
   {
     title: 'Settings',
     path: '/Settings',
-    icon: <img src="imag/school.png" className='imagesize'/>,
+    icon: <img src="imag/setting.png" className='imagesize'/>,
     cName: 'nav-text',
     submenu:null,
 

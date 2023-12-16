@@ -13,7 +13,7 @@ import { data } from '../../fixedData';
 
 import * as Aiicons from 'react-icons/ai';
 
-import { DeleteReq } from "../HttpReqs";
+import { DeleteReq, GetReq } from "../HttpReqs";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "../ConfirmDialog";
 import { useMemo } from 'react'
@@ -61,7 +61,7 @@ export function Boxhtml(props: any) {
 }
 
 
-export default function PatientRegisteration(props: any) {
+export default function StudentReg(props: any) {
     const baseUrl = data.baseUrl
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
@@ -93,16 +93,28 @@ export default function PatientRegisteration(props: any) {
     let navigate = useNavigate();
     const location = useLocation();
     const [studentImg,setStudentImg ] = useState('')
+    const [schools, setschools] = useState([{
+        SchoolAddress:"",
+        SchoolRedgNo:"",
+        SchoolnName:"",
+        idSchool:0
+    }])
 //   const options = useMemo(() => countryList().getData(), [])
-    // useEffect(() => {
-    //     if (currentPatient != null) {
-    //         getPatient(currentPatient.patient_id, currentPatient.urn)
-    //     }
-    //     if(mobileForPtReg!==null)
-    //     {
-    //         setValue("contact_details.phone_number",mobileForPtReg)
-    //     }
-    // }, [])
+    const getSchools=async()=>{
+        let scls = await GetReq('schools')
+        setschools(scls.data)
+    }
+    useEffect(() => {
+        // if (currentPatient != null) {
+        //     getPatient(currentPatient.patient_id, currentPatient.urn)
+        // }
+        // if(mobileForPtReg!==null)
+        // {
+        //     setValue("contact_details.phone_number",mobileForPtReg)
+        // }
+        getSchools()
+
+    }, [])
     const filehandle = (e: any) => {
         setimg(e.target.files[0])
     }
@@ -201,7 +213,18 @@ setStudentImg(e.target.files[0])
     return (
         <Boxhtml>
             <form onSubmit={handleSubmit(createStudent)}>
+                <h3 className="heading">Student Form</h3>
                 <div className="row gutters">
+                <div className="col-sm-12">
+                <label> Select your School</label>
+                        <select className="form-control"
+                            {...register("instituteid", { required: true })}
+                        >
+                            <option value="">Select</option>
+                            {schools.map(schl=> <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}</option>)}
+                        </select>
+                        {errors.instituteid && <span className='errormsg'>This field is required</span>}
+                    </div>
                     <SmallInputdesign>
                         <label>Upload Image</label>
                         <input type="file" className="form-control" id="education" placeholder="Select Image..."
