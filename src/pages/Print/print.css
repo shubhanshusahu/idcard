@@ -1,0 +1,17 @@
+.head-text {
+    position: relative;
+ }
+ .text-on-image {
+    position: absolute;
+    right: 20px;
+    left: 89px;
+    width: 81%;
+    bottom: 11%;
+ }
+ .field{
+    height: 16px;
+    font-size: x-small;
+    text-wrap: pretty;
+    max-width: 86px;
+  
+ }

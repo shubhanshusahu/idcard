@@ -17,54 +17,17 @@ import { DeleteReq, GetReq } from "../HttpReqs";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "../ConfirmDialog";
 import { useMemo } from 'react'
+import { BigInputdesign, Boxhtml, SmallInputdesign } from "../Boxhtml";
 // import countryList from 'react-select-country-list'
 
 // import { data } from '../fixedData'
-export function SmallInputdesign(props: any) {
-    return (
-        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div className="form-group">
-                {props.children}
-            </div>
-        </div>
-    )
-
-}
-export function Boxhtml(props: any) {
-    return (<div className="container addScrollpatient" style={{ marginTop: '13px', marginBottom: '13px' }}>
-        <div className="container-fluid p-0">
-            <div className="main-container">
-                <div className="content-wrapper ">
-                    <div className="row gutters">
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-10">
-                            <div className="mincon">
-                                <div className="card-body">
-                                    {props.children}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* <!-- Row end --> */}
-
-                </div>
-                {/* <!-- Content wrapper end --> */}
-
-            </div>
-            {/* <!-- *************
-    ************ Main container end *************
-************* --> */}
-            {/* <footer className="main-footer">© Footer</footer> */}
-        </div>
-        {/* <Notifications position='bottom-right' /> */}
-
-    </div>);
-}
 
 
 export default function StudentReg(props: any) {
     const baseUrl = data.baseUrl
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
+    const [file, setFile] = useState('');
     const { companyID,currentPatient,mobileForPtReg} = useSelector((state: any) => state.RootRed)
     const defaultdata = {
         "instituteid":1,
@@ -103,6 +66,10 @@ export default function StudentReg(props: any) {
     const getSchools=async()=>{
         let scls = await GetReq('schools')
         setschools(scls.data)
+        dispatch({
+            type:'getSchools',
+            payload:scls.data
+            });
     }
     useEffect(() => {
         // if (currentPatient != null) {
@@ -209,13 +176,14 @@ export default function StudentReg(props: any) {
 const fileHandle = (e:any)=>{
 console.log(e.target.files[0])
 setStudentImg(e.target.files[0])
+setFile(URL.createObjectURL(e.target.files[0]));
 }
     return (
         <Boxhtml>
             <form onSubmit={handleSubmit(createStudent)}>
                 <h3 className="heading">Student Form</h3>
                 <div className="row gutters">
-                <div className="col-sm-12">
+                <BigInputdesign>
                 <label> Select your School</label>
                         <select className="form-control"
                             {...register("instituteid", { required: true })}
@@ -224,7 +192,7 @@ setStudentImg(e.target.files[0])
                             {schools.map(schl=> <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}</option>)}
                         </select>
                         {errors.instituteid && <span className='errormsg'>This field is required</span>}
-                    </div>
+                        </BigInputdesign>
                     <SmallInputdesign>
                         <label>Upload Image</label>
                         <input type="file" className="form-control" id="education" placeholder="Select Image..."
@@ -232,6 +200,8 @@ setStudentImg(e.target.files[0])
                             />
                         {/* {errors. && <span className='errormsg'>Image is required</span>} */}
                     </SmallInputdesign>
+                    <img className="imgPreview" src={file} />
+                    
                     <SmallInputdesign>
                         <label>First Name</label>
                         <input className="form-control" id="education" placeholder="Name..."

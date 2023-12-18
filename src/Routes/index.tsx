@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react'
 import StudentReg from '../components/StudentReg/StudentRegisteration'
+import Print from '../pages/Print'
 import {
   BrowserRouter as Router,
   Routes,
@@ -78,6 +79,8 @@ export default function Rout() {
             <Routes>
              
               <Route path="/register" element={<StudentReg />} />
+              <Route path="/printing" element={<Print />} />
+
               <Route path="/" element={<Dashboard />} />
               {/* <Route path="*" element={<Dashboard/>} /> */}
             </Routes>
