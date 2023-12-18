@@ -19,16 +19,22 @@ hr{
 }
 
 .menu-bars {
+  z-index: 1;
+  backdrop-filter: blur(5px);
   margin-left: 0rem;
   font-size: 2rem;
   padding: 0 15px;
-  background: #fefefe;
+  background: #ffffff75;
   position: sticky;
   top: 0;
   width: -webkit-fill-available;
+
 }
 .hamburger-react div{
   background-color:  #243A6C!important;
+}
+.sidebar-item.plain:active{
+  background-color: #000;
 }
 
 .nav-menu {
@@ -96,6 +102,9 @@ hr{
 
 }
 .nav-text a:hover {
+  background-color: #000;
+}
+nav-text a:active {
   background-color: #000;
 }
 .nav-textWithSubmenu a:hover {
@@ -304,6 +313,9 @@ span {
   font-weight: bold;
   position: absolute;
   left: 20px;
+}
+.sidebar-item:active{
+  background-color: #000; 
 }
 .sidebar-item:hover{
   transition: cubic-bezier(0.755, 0.05, 0.855, 0.06);

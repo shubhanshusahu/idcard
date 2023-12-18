@@ -29,6 +29,7 @@ const initialState={
     currentSite:null,
     currentAppointment:null,
     schoolList:[],
+
 }
 const userlogin = createAction<number>("userlogin");
 const getSchools = createAction<number>("getSchools");
@@ -46,6 +47,7 @@ const rootReducer = createReducer(initialState,(builder) => {
         state.schoolList = action.payload;
             })
     .addCase(togglenavbar, (state, action:any) => {
+
         state.sidebar = !state.sidebar;
      })
 })

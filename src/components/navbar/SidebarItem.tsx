@@ -35,7 +35,7 @@ export default function SidebarItem(props:any){
             <Link to={props.item.path} className="sidebar-item plain" onClick={()=>{
                 if(device==='mobile')
                 {dispatch({
-                    type:'toggleSidebar'
+                    type:'togglenavbar'
                 })}
             }}>
                <Tooltip title={props.item.title}>   {props.item.icon}</Tooltip> 

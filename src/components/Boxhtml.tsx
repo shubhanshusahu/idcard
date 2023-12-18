@@ -30,7 +30,7 @@ export function Boxhtml(props: any) {
 export function SmallInputdesign(props: any) {
     return (
         <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div className="form-group">
+            <div className="form-group acenter">
                 {props.children}
             </div>
         </div>

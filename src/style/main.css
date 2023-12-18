@@ -257,7 +257,9 @@ h3.styled {
     margin: 0 auto;
     max-height: 305px;
   }
-
+.acenter{
+  align-self: center;
+}
 .text-primary {
   color: #242e64 !important; }
 

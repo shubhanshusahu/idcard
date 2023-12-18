@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FaIcons } from 'react-icons/fa';
 import * as Aiicons from 'react-icons/ai';
+import Login from '../pages/Signin';
 
 function Home() {
   let navigate = useNavigate();
@@ -29,7 +30,10 @@ function Home() {
   }, [])
 
 
-  return <div className="rightpart closehead">Hi Admin<span className='useravtar'><img src="imag\Teacher.png" style={{width:'30px'}}/></span></div>;
+  return <div className="rightpart closehead">Hi Admin<span className='useravtar'><img onClick={()=>{
+navigate('/login')
+
+  }} src="imag\Teacher.png" style={{width:'30px'}}/></span></div>;
 }
 
 const Dashboard = () => {
@@ -50,7 +54,7 @@ export default function Rout() {
 
     const pathname = window.location.pathname.toLowerCase();
     if (pathname === '/login'.toLowerCase()
-      || pathname === '/RegisterYourself'.toLowerCase() 
+      || pathname === '/register'.toLowerCase() 
       || pathname === '/RegisterYourself/form'.toLowerCase()) {
       setnavvisible(false)
     }
@@ -64,12 +68,12 @@ export default function Rout() {
           <Sidebar side={side} />
         }
         <div className='secondhalf'>
-          <div className='menu-bars' onClick={() => dispatch({
-            type: 'togglenavbar'
-          })}>
+          <div className='menu-bars' >
             {navvisible &&
               <div className='headeruser'>
-                <Hamburger color="#243A6C" direction="right" distance="md" duration={0.8} />
+                <Hamburger onToggle={() => dispatch({
+                type: 'togglenavbar'
+              })} color="#243A6C" direction="right" distance="md" duration={0.8} />
                <h5>ALPHA X</h5>
                 <Home />
               </div>
@@ -80,6 +84,8 @@ export default function Rout() {
              
               <Route path="/register" element={<StudentReg />} />
               <Route path="/printing" element={<Print />} />
+              <Route path="/login" element={<Login />} />
+
 
               <Route path="/" element={<Dashboard />} />
               {/* <Route path="*" element={<Dashboard/>} /> */}

@@ -195,7 +195,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                         </BigInputdesign>
                     <SmallInputdesign>
                         <label>Upload Image</label>
-                        <input type="file" className="form-control" id="education" placeholder="Select Image..."
+                        <input type="file" accept="image/*" className="form-control" id="education" placeholder="Select Image..."
                         onChange={fileHandle}
                             />
                         {/* {errors. && <span className='errormsg'>Image is required</span>} */}
