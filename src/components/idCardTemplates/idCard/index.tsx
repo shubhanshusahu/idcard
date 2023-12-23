@@ -6,7 +6,10 @@ const Card = ({file}:any) => {
     <div className="head-image">
     <img className = "idcardPreview" src={file}/>
     </div>
-    <div className='text-on-image'>
+    <img className='dp' src ="./imag/dp.jpg"/>
+    <p className=" idname">Shubhanshu Sahu </p>
+    <div  className='text-on-image'>
+      
         <p className="field">Shubhanshu Sahu </p>
         <p className="field">7th A </p>
         <p className="field">13/02/1999 </p>

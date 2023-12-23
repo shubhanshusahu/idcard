@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BigInputdesign, Boxhtml, SmallInputdesign } from '../../components/Boxhtml'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetReq } from '../../components/HttpReqs'
 import './print.css'
-import Card from '../../components/idCard'
+import Card from '../../components/idCardTemplates/idCard'
+import ReactToPrint, { useReactToPrint } from 'react-to-print'
 const Print = () => {
-
+    const componentRef = useRef(null);
     const dispatch = useDispatch()
     const [file, setFile] = useState('');
     const { schoolList } = useSelector((state: any) => state.RootRed)
@@ -24,7 +25,9 @@ const Print = () => {
             console.log(schoolList, 'schoollist')
         }
     }, [])
-
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+      });
     function handleChange(e: any) {
         console.log(e.target.files);
         setFile(URL.createObjectURL(e.target.files[0]));
@@ -33,6 +36,7 @@ const Print = () => {
     return (<>
         <Boxhtml>
             <h3 className="heading">ID Card Printing</h3>
+            <hr></hr>
             <div className="row gutters">
             <BigInputdesign>
                 <label> Select your School</label>
@@ -54,20 +58,23 @@ const Print = () => {
 
             </SmallInputdesign>
             <SmallInputdesign>
-            <label>Preview</label>
-               <Card file ={file}/>
+            {file && 
+            <> <label>Preview</label>
+             <Card file ={file}/></>}
            </SmallInputdesign>
             </div>
         </Boxhtml>
-        <Boxhtml>
-
-       
+        <button onClick={handlePrint}>Print this out!</button>
+        {file &&  <div  ref={componentRef}>
+         <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div>
+         <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div>
+       </div>}
         <BigInputdesign>
-        <Card file ={file}/><Card file ={file}/><Card file ={file}/>
-        <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/>
+        {/* <Card file ={file}/><Card file ={file}/><Card file ={file}/> */}
+        {/* <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/> */}
         </BigInputdesign>
-         </Boxhtml>
-        
+         
+                
         </>
     )
 }

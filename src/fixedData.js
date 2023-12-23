@@ -1,6 +1,6 @@
 export const data = {
-    // "baseUrl":"http://localhost:3003/",
-    "baseUrl" : "https://idcardbackend.vercel.app/",
+    "baseUrl":"http://localhost:3003/",
+    // "baseUrl" : "https://idcardbackend.vercel.app/",
     class : [
         "Play School",
         "Nursery",

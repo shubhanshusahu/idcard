@@ -255,7 +255,12 @@ h3.styled {
   .idcardPreview{
     width: auto;
     margin: 0 auto;
-    max-height: 305px;
+    height: 325px;
+    margin: 1px;
+  }
+  .content-wrapper{
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px 0px #000000ab!important;
   }
 .acenter{
   align-self: center;

@@ -28,6 +28,7 @@ hr{
   position: sticky;
   top: 0;
   width: -webkit-fill-available;
+  box-shadow: 0px 1px 7px 0px #0000007d;
 
 }
 .hamburger-react div{
