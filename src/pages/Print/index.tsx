@@ -9,7 +9,18 @@ const Print = () => {
     const componentRef = useRef(null);
     const dispatch = useDispatch()
     const [file, setFile] = useState('');
-    const { schoolList } = useSelector((state: any) => state.RootRed)
+    const [DevelopPrint, setDevelopPrint] = useState(false);
+
+    const { schoolList,students } = useSelector((state: any) => state.RootRed)
+    const getStudents = async () => {
+        let stdnts = await GetReq('students')
+        console.log(stdnts, 'stdnts')
+        dispatch({
+            type: 'getStudents',
+            payload: stdnts.data
+        })
+    }
+
     const getSchools = async () => {
         let scls = await GetReq('schools')
         dispatch({
@@ -18,11 +29,20 @@ const Print = () => {
         });
     }
     useEffect(() => {
+        if (students.length == 0) {
+            getStudents();
+        }
+        else{
+            console.log(students, 'students')
+        }
         if (schoolList.length == 0) {
             getSchools();
+            
         }
         else {
             console.log(schoolList, 'schoollist')
+         
+
         }
     }, [])
     const handlePrint = useReactToPrint({
@@ -60,14 +80,21 @@ const Print = () => {
             <SmallInputdesign>
             {file && 
             <> <label>Preview</label>
-             <Card file ={file}/></>}
+           { students.length > 0 &&  <Card file ={file} stud ={students[0]}/>}</>}
            </SmallInputdesign>
             </div>
         </Boxhtml>
-        <button onClick={handlePrint}>Print this out!</button>
-        {file &&  <div  ref={componentRef}>
-         <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div>
-         <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div>
+        <button className='btn btn-primary' onClick={()=>setDevelopPrint(true)}>Generate ID Cards</button>
+        <button className='btn btn-success'  onClick={handlePrint}>Print this out!</button>
+        {file && DevelopPrint &&  <div  ref={componentRef}> 
+         <div  className='printPage'> 
+            {
+               
+                students.length > 0 && students.map((stud: any,i: number)=>  <Card key ={i} file ={file} stud={stud}/>)
+                
+            }</div>
+         {/* <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div>
+         <div  className='printPage'>      <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/>   <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/>  <Card file ={file}/> <Card file ={file}/><Card file ={file}/> <Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/><Card file ={file}/></div> */}
        </div>}
         <BigInputdesign>
         {/* <Card file ={file}/><Card file ={file}/><Card file ={file}/> */}

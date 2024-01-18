@@ -123,7 +123,9 @@ export default function StudentReg(props: any) {
                 // },
                 )
                 .then(function (response: any) {
-                    
+                    if(response.status==201){
+                        alert('Student Registered!')
+                    }
                     console.log(response, "this one");
                 })
 
