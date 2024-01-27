@@ -9,23 +9,28 @@ import { useDispatch,useSelector } from 'react-redux';
 const columns = [
     {
         name: 'ID',
-        selector: row => row.idSchool,
+        selector: row => row.userid,
         sortable: true,
         width: '70px'
     },
     {
-        name: 'Schools Name',
-        selector: row => row.SchoolnName,
+        name: 'Teacher/ Admin Name',
+        selector: row => row.username,
         sortable: true,
     },
     {
-        name: 'Registeration No.',
-        selector: row => row.SchoolRedgNo,
+        name: 'Email',
+        selector: row => row.usermail,
         sortable: true,
     },
     {
-        name: 'Address',
-        selector: row => row.SchoolAddress,
+        name: 'Phone',
+        selector: row => row.userphone,
+        sortable: true,
+    },
+    {
+        name: 'School/Institute ID',
+        selector: row => row.schoolid,
         sortable: true,
     },
     {
@@ -33,18 +38,19 @@ const columns = [
         selector: row =><><button className='btn btn-primary'>Edit</button><button className='btn btn-danger'>Delete</button></>,
         sortable: true,
     },
+    
 ];
 
-export default function SchoolList(props) {
+export default function TeachersList(props) {
     const [loading, setloading] = useState("Loading please wait..")
-    const { schoolList,students } = useSelector((state) => state.RootRed)
+    const { teacherList,students } = useSelector((state) => state.RootRed)
     const dispatch= useDispatch()
 
     const [filtered, setfiltered] = useState([])
     const [Initialdata, setInitialdata] = useState([])
     const getdata = async () => {
         try {
-            let response = await GetReq('schools')
+            let response = await GetReq('teachers')
             setfiltered(response.data)
             setInitialdata(response.data)
             console.log(response.data,'schoolsList')
@@ -53,7 +59,7 @@ export default function SchoolList(props) {
             }
             else
             dispatch({
-                type: 'getSchools',
+                type: 'getTeachers',
                 payload: response.data
             })
         }
@@ -63,10 +69,10 @@ export default function SchoolList(props) {
         }
     }
     useEffect(() => {
-        console.log(schoolList,'schoolist')
-        if(schoolList?.length>0){
-            setfiltered(schoolList)
-            setInitialdata(schoolList)
+        console.log(teacherList,'schoolist')
+        if(teacherList?.length>0){
+            setfiltered(teacherList)
+            setInitialdata(teacherList)
         }
         else {getdata()}
     }, [])

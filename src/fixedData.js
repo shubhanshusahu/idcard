@@ -26,5 +26,6 @@ export const data = {
     ]
 }
 export const colors ={
-    logoBg: '#243A6C'
+    logoBg: '#243A6C',
+    primary:'#243A6C',
 }

@@ -29,12 +29,15 @@ const initialState={
     currentSite:null,
     currentAppointment:null,
     schoolList:[],
+    teacherList:[],
     students:[],
 
 
 }
 const userlogin = createAction<number>("userlogin");
 const getSchools = createAction<number>("getSchools");
+const getTeachers = createAction<number>("getTeachers");
+
 const getStudents = createAction<number>("getStudents");
 
 const togglenavbar = createAction<number>("togglenavbar");
@@ -48,6 +51,9 @@ const rootReducer = createReducer(initialState,(builder) => {
         })
     .addCase(getSchools, (state, action:any) => {
         state.schoolList = action.payload;
+        })
+    .addCase(getTeachers, (state, action:any) => {
+        state.teacherList = action.payload;
         })
     .addCase(getStudents, (state, action:any) => {
         state.students = action.payload;

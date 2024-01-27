@@ -52,8 +52,8 @@ export const SidebarData = [
   },
  
   {
-    title: 'Teachers',
-    path: '/teachers',
+    title: 'Teachers/Admin',
+    path: '/teacher',
     icon: <img src="imag/teachernew.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu: null

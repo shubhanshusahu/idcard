@@ -17,6 +17,7 @@ import { FaIcons } from 'react-icons/fa';
 import * as Aiicons from 'react-icons/ai';
 import Login from '../pages/Signin';
 import School from '../pages/School';
+import Teachers from '../pages/Teacher';
 
 function Home() {
   let navigate = useNavigate();
@@ -87,6 +88,8 @@ export default function Rout() {
               <Route path="/printing" element={<Print />} />
               <Route path="/login" element={<Login />} />
               <Route path="/school" element={<School />} />
+              <Route path="/teacher" element={<Teachers />} />
+
 
 
 
