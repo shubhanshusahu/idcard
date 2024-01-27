@@ -202,7 +202,12 @@ setFile(URL.createObjectURL(e.target.files[0]));
                             />
                         {/* {errors. && <span className='errormsg'>Image is required</span>} */}
                     </SmallInputdesign>
-                    <img className="imgPreview" src={file} />
+                    
+                        {file &&  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                                    <div className="form-group acenter text-center">
+                                       <img className="imgPreview" src={file} />
+                                    </div>
+                                </div>}
                     
                     <SmallInputdesign>
                         <label>First Name</label>

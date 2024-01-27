@@ -4,7 +4,7 @@ export function Boxhtml(props: any) {
             <div className="main-container">
                 <div className="content-wrapper ">
                     <div className="row gutters">
-                        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-10">
+                        <div className="col-12">
                             <div className="mincon">
                                 <div className="card-body">
                                     {props.children}
@@ -29,8 +29,8 @@ export function Boxhtml(props: any) {
 }
 export function SmallInputdesign(props: any) {
     return (
-        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-            <div className="form-group acenter">
+        <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 align-self-*-center">
+            <div className="form-group acenter ">
                 {props.children}
             </div>
         </div>

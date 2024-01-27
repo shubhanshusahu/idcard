@@ -20,6 +20,10 @@
         /* width: 93%; */
         margin: 0 auto;
     }
+    .errormsg{
+        color: red;
+        font-size: smaller;
+    }
     .headermin{
         text-decoration: underline;
         text-transform: capitalize;

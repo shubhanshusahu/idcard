@@ -14,7 +14,7 @@ import * as HiIcons from 'react-icons/hi2';
 export const SidebarData = [
   
   {
-    title: 'Register School',
+    title: 'School',
     path: '/school',
     icon: <img src="imag/school.png" className='imagesize'/>,
     cName: 'nav-textWithSubmenu',

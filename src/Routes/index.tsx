@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaIcons } from 'react-icons/fa';
 import * as Aiicons from 'react-icons/ai';
 import Login from '../pages/Signin';
+import School from '../pages/School';
 
 function Home() {
   let navigate = useNavigate();
@@ -85,6 +86,8 @@ export default function Rout() {
               <Route path="/register" element={<StudentReg />} />
               <Route path="/printing" element={<Print />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/school" element={<School />} />
+
 
 
               <Route path="/" element={<Dashboard />} />
