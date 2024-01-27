@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { Boxhtml } from '../../components/Boxhtml';
 import { PostReq } from '../../components/HttpReqs';
+import { useDispatch } from 'react-redux';
 
 function SmallInputdesign(props) {
     return (
@@ -21,12 +22,13 @@ export default function CreateSchool(props) {
     const { schoolList, currentSchool } = useSelector((state) => state.RootRed)
     const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } = useForm({
         defaultValues: {
-            "idSchool": "",
-            "SchoolnName": "",
             "SchoolRedgNo": "",
+            "SchoolnName": "",
             "SchoolAddress": "",
         }
     });
+    const dispatch= useDispatch()
+
     const location = useLocation();
     const baseUrl = data.baseUrl
     let navigate = useNavigate();
@@ -35,6 +37,15 @@ export default function CreateSchool(props) {
         PostReq('school',data, { headers: { 'accept': 'application/json', 'Content-Type': 'application/json' } })
         .then(res=>{
             console.log(res)
+            if(res?.status==200){
+            //    let schoolListtemp =;
+            //    schoolListtemp.push(res.data)
+               dispatch({
+                type: 'getSchools',
+                payload: []
+            })
+            alert('School '+ data.SchoolnName+ " account created!")
+            }
         })
 
     };
@@ -68,7 +79,7 @@ export default function CreateSchool(props) {
                     </SmallInputdesign>
 
                     <SmallInputdesign>
-                        <label>  Registration No.</label>
+                        <label>  Address</label>
                         <input className="form-control" id="education" placeholder="Address."
                             {...register("SchoolAddress", { required: true })} />
                         {errors.SchoolAddress && <span className='errormsg'>This field is required</span>}
