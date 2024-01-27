@@ -1,11 +1,12 @@
 import DataTable from 'react-data-table-component';
-import { data } from '../../fixedData';
+import { colors, data } from '../../fixedData';
 import { GetReq } from '../../components/HttpReqs';
 import { useEffect, useState } from 'react';
 import { Boxhtml } from '../../components/Boxhtml';
 import '../../style/main.css'
 import { useDispatch,useSelector } from 'react-redux';
-
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { RiDeleteBin6Fill } from "react-icons/ri";
 const columns = [
     {
         name: 'ID',
@@ -35,7 +36,8 @@ const columns = [
     },
     {
         name: 'Action',
-        selector: row =><><button className='btn btn-primary'>Edit</button><button className='btn btn-danger'>Delete</button></>,
+        selector: row =><><BiSolidMessageSquareEdit style={{cursor:'pointer'}} color={colors.primary} size={25} />
+        <RiDeleteBin6Fill style={{marginLeft:'5px',cursor:'pointer'}} color={colors.danger} size={25} /></>,
         sortable: true,
     },
     

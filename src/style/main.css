@@ -264,7 +264,8 @@ h3.styled {
   }
   .rdt_TableHeadRow{
   color: #fff;
-  background-color: #243A6C!important;
+  background: rgb(46,168,245)!important;
+  background: linear-gradient(131deg, rgba(46,168,245,1) 0%, rgba(32,83,115,1) 53%, rgba(36,58,108,1) 88%)!important;
   border-radius: 8px;
   font-weight: bold;
   }
