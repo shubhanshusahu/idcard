@@ -91,7 +91,7 @@ export default function Rout() {
                 <Hamburger onToggle={() => dispatch({
                 type: 'togglenavbar'
               })} color="#243A6C" direction="right" distance="md" duration={0.8} />
-               <h5>{user.userrole=='teacher'? user.SchoolnName : 'ALPHA X'}</h5>
+               <h5>{user?.userrole=='teacher'? user.SchoolnName : 'ALPHA X'}</h5>
                 <Home />
               </div>
             }
