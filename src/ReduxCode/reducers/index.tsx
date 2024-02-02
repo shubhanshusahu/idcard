@@ -18,8 +18,9 @@ else
 
 const initialState={
     username:null,
-    user :null,
+    user :JSON.parse(localStorage.getItem('user') || 'null') || null,
     sidebar:false,
+    navVisible:true,
     companyID:'qwe123',
     device:DeviceDetect(),
     mobileForPtReg:'',
@@ -41,6 +42,8 @@ const getTeachers = createAction<number>("getTeachers");
 const getStudents = createAction<number>("getStudents");
 
 const togglenavbar = createAction<number>("togglenavbar");
+const navVisible = createAction<number>("navVisible");
+
 
 const rootReducer = createReducer(initialState,(builder) => {
     builder
@@ -61,6 +64,10 @@ const rootReducer = createReducer(initialState,(builder) => {
     .addCase(togglenavbar, (state, action:any) => {
 
         state.sidebar = !state.sidebar;
+     })
+     .addCase(navVisible, (state, action:any) => {
+
+        state.navVisible =action.payload;
      })
      
 })

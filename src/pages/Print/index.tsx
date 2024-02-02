@@ -9,28 +9,39 @@ const Print = () => {
     const componentRef = useRef(null);
     const dispatch = useDispatch()
     const [file, setFile] = useState('');
+    const [schoolid, setschoolid] = useState('')
     const [DevelopPrint, setDevelopPrint] = useState(false);
 
     const { schoolList,students } = useSelector((state: any) => state.RootRed)
-    const getStudents = async () => {
-        let stdnts = await GetReq('students')
+    const getStudents = async (schoolid: string) => {
+        if(schoolid!=''){
+        let stdnts = await GetReq('students?schoolid='+schoolid)
         console.log(stdnts, 'stdnts')
         dispatch({
             type: 'getStudents',
             payload: stdnts.data
         })
     }
+    else{
+        alert('please select any school')
+    }
+    }
 
     const getSchools = async () => {
-        let scls = await GetReq('schools')
-        dispatch({
+        
+          let scls = await GetReq('schools')
+            dispatch({
             type: 'getSchools',
             payload: scls.data
-        });
+        });  
+
+        
     }
+
+    
     useEffect(() => {
         if (students.length == 0) {
-            getStudents();
+          
         }
         else{
             console.log(students, 'students')
@@ -60,7 +71,7 @@ const Print = () => {
             <div className="row gutters">
             <BigInputdesign>
                 <label> Select your School</label>
-                <select className="form-control"
+                <select className="form-control" onChange={e=>{setschoolid(e.target.value);getStudents(e.target.value)}}
                 >
                     <option value="">Select</option>
                     {schoolList.map((schl: { idSchool: string | number | readonly string[] | undefined; SchoolnName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; SchoolAddress: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined }): any =>

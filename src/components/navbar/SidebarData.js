@@ -16,44 +16,26 @@ export const SidebarData = [
   {
     title: 'School',
     path: '/school',
+    role: 'admin',
     icon: <img src="imag/school.png" className='imagesize'/>,
     cName: 'nav-textWithSubmenu',
     submenu:null,
 
-    // submenu: [
-    //   {
-    //     title: 'Create',
-    //     path: '/Patient',
-    //     icon: <FaIcons.FaUserInjured color="#fff" />,
-    //     cName: 'subnav-text'
-    //   },
-    // ]
   },
   {
     title: 'Register Student',
     path: '/register',
+    role:'teacher,admin,student',
     icon: <img src="imag/student2.png" className='imagesize'/>,
     cName: 'nav-textWithSubmenu',
     submenu:null,
-    // submenu: [
-    //   {
-    //     title: 'Create',
-    //     path: '/Doctor',
-    //     icon: <FaIcons.FaUserMd color="#fff" />,
-    //     cName: 'subnav-text'
-    //   },
-      // {
-      //   title: 'List',
-      //   path: '/Doctors',
-      //   icon: <FaIcons.FaClipboardList color="#fff" />,
-      //   cName: 'subnav-text'
-      // }
-    // ]
+
   },
  
   {
     title: 'Teachers/Admin',
     path: '/teacher',
+    role:'admin',
     icon: <img src="imag/teachernew.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu: null
@@ -61,54 +43,27 @@ export const SidebarData = [
   {
     title: 'Students',
     path: '/Students',
+    role:'teacher,admin',
     icon: <img src="imag/student.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu: null
   },
-  // {
-  //   title: 'Medicine',
-  //   path: '/Medicine',
-  //   icon: <GiIcons.GiMedicines color="#fff" />,
-  //   cName: 'minnavtext',
-  //   submenu: null
-  // },
   {
     title: 'Printing Cards',
     path: '/printing',
+    role:'teacher,admin',
     icon: <img src="imag/print.png" className='imagesize'/>,
     cName: 'minnavtext',
     submenu:null,
-  //   submenu: [
-  //   {
-  //     title: 'List',
-  //     path: '/Appointments',
-  //     icon: <GiIcons.GiMedallist color="#fff" />,
-  //     cName: 'minnavtext',
-  //     submenu: null
-  //   },
-  // ]
   },
   {
     title: 'Settings',
     path: '/Settings',
+    role:'admin',
     icon: <img src="imag/setting.png" className='imagesize'/>,
     cName: 'nav-text',
     submenu:null,
 
-    // submenu: [
-      // {
-      //   title: 'Create',
-      //   path: '/Kiosk',
-      //   icon: <GiIcons.GiVendingMachine color="#fff" />,
-      //   cName: 'subnav-text'
-      // },
-    //   {
-    //     title: 'List',
-    //     path: '/Kiosks',
-    //     icon: <FaIcons.FaClipboardList color="#fff" />,
-    //     cName: 'subnav-text'
-    //   }
-    // ]
   },
 
 
