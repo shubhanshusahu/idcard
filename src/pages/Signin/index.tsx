@@ -13,6 +13,7 @@ const Login = () => {
   const dispatch = useDispatch()
   let navigate = useNavigate()
   const login = async () => {
+    console.log({ username, pass },'body')
     const res = await PostReq('login', { username, pass })
     if (res.data.length != 0) {
       console.log(res,'res')
