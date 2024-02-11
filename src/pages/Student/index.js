@@ -9,6 +9,7 @@ import CreateSchool from './Create';
 import TeachersList from './StudentList';
 import StudentList from './StudentList';
 import CreateStudent from './Create';
+import ImportStudents from './ImportStudent';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,6 +60,8 @@ export default function Students() {
         textColor="secondary" indicatorColor="secondary">
           <Tab label="Students" {...a11yProps(0)} />
           <Tab label="Create" {...a11yProps(1)} />
+          <Tab label="Import Data" {...a11yProps(2)} />
+
           {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
         </Tabs>
       </Box>
@@ -67,6 +70,9 @@ export default function Students() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <CreateStudent setValue={setValue}/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <ImportStudents setValue={setValue}/>
       </CustomTabPanel>
 
     </Box>
