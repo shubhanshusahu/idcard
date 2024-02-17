@@ -24,7 +24,7 @@ const initialState={
     companyID:'qwe123',
     device:DeviceDetect(),
     mobileForPtReg:'',
-    currentPatient:null,
+    currentStudentDetails:0,
     currentDoctor:null,
     currentCompany:null,
     currentSite:null,
@@ -38,6 +38,7 @@ const initialState={
 const userlogin = createAction<number>("userlogin");
 const getSchools = createAction<number>("getSchools");
 const getTeachers = createAction<number>("getTeachers");
+const setStudentDetails = createAction<number>("setStudentDetails");
 
 const getStudents = createAction<number>("getStudents");
 
@@ -57,6 +58,9 @@ const rootReducer = createReducer(initialState,(builder) => {
         })
     .addCase(getTeachers, (state, action:any) => {
         state.teacherList = action.payload;
+        })
+    .addCase(setStudentDetails, (state, action:any) => {
+        state.currentStudentDetails = action.payload;
         })
     .addCase(getStudents, (state, action:any) => {
         state.students = action.payload;

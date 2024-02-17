@@ -28,7 +28,7 @@ export default function StudentReg(props: any) {
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
     const [file, setFile] = useState('');
-    const { companyID,currentPatient,mobileForPtReg} = useSelector((state: any) => state.RootRed)
+    const { companyID,currentPatient,currentStudentDetails} = useSelector((state: any) => state.RootRed)
     const defaultdata = {
         "instituteid":1,
         "studname":"",
@@ -71,17 +71,44 @@ export default function StudentReg(props: any) {
             payload:scls.data
             });
     }
+    const setStudentinForm=(currentStudentDetails:any)=>{
+        console.log(currentStudentDetails,'inside setvalue')
+        setValue( "instituteid",currentStudentDetails.instituteid)
+        setValue( "studname",currentStudentDetails.studname)
+        setValue( "rollno",currentStudentDetails.rollno)
+        setValue( "enrollno",currentStudentDetails.enrollno)
+        setValue( "class",currentStudentDetails.class)
+        setValue( "section",currentStudentDetails.section)
+        setValue( "father_name",currentStudentDetails.father_name)
+        setValue( "mother_name",currentStudentDetails.mother_name)
+        setValue( "blood_group",currentStudentDetails.blood_group)
+        setValue( "dob",currentStudentDetails.dob)
+        setValue( "address",currentStudentDetails.address)
+        setValue( "pincode",currentStudentDetails.pincode)
+        setValue( "gender",currentStudentDetails.gender)
+        setValue( "contactno",currentStudentDetails.contactno)
+    }
     useEffect(() => {
-        // if (currentPatient != null) {
-        //     getPatient(currentPatient.patient_id, currentPatient.urn)
-        // }
-        // if(mobileForPtReg!==null)
-        // {
-        //     setValue("contact_details.phone_number",mobileForPtReg)
-        // }
+        console.log(currentStudentDetails,'current student id')
+        if (currentStudentDetails != 0) {
+            GetReq('student?idstudent='+currentStudentDetails)
+            .then(res=>{
+                console.log('getting student details',res) 
+                if(res.data.length)
+                setStudentinForm(res.data[0])
+                // dispatch({
+                //     type: 'setStudentDetails',
+                //     action: res.data[0]
+                // })
+            })
+            console.log(currentStudentDetails,'current student selected to edit')
+          
+        }
+       
         getSchools()
-
     }, [])
+
+    
     const filehandle = (e: any) => {
         setimg(e.target.files[0])
     }
@@ -230,7 +257,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                     <SmallInputdesign>
                         <label>Roll Number</label>
                         <input className="form-control" id="education" placeholder="Roll no..."
-                            {...register("rollno", { required: true })} />
+                            {...register("rollno")} />
                         {errors.rollno && <span className='errormsg'>This field is required</span>}
                     </SmallInputdesign>
                     <SmallInputdesign>
@@ -294,7 +321,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                     <SmallInputdesign>
                         <label> Blood Group.</label>
                         <select className="form-control"
-                            {...register("blood_group", { required: true })}
+                            {...register("blood_group")}
                         >
                             <option value="">Select Blood group</option>
                             <option value="O+">O+</option>
@@ -312,7 +339,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                     <SmallInputdesign>
                         <label >Mobile Number</label>
                         <input className="form-control" placeholder="Mobile Number" type="number"
-                            {...register("contactno", { required: true, maxLength: 40, minLength: 6 })} />
+                            {...register("contactno", { required: true, maxLength: 10, minLength: 10 })} />
                         {errors.contactno && <span className='errormsg'>This field is invalid</span>}
                     </SmallInputdesign>
                     <div className="col-sm-12">
@@ -332,7 +359,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                     <SmallInputdesign>
                         <label >Postal code</label>
                         <input type="number" className="form-control" placeholder="Postal code"
-                            {...register("pincode", { required: true, minLength: 3, maxLength: 20 })} />
+                            {...register("pincode")} />
                         {errors.pincode && <span className='errormsg'>This field is required</span>}
                     </SmallInputdesign>
 

@@ -1,59 +1,70 @@
 import DataTable from 'react-data-table-component';
 import { colors, data } from '../../fixedData';
-import { GetReq } from '../../components/HttpReqs';
+import { DeleteReq, GetReq } from '../../components/HttpReqs';
 import { useEffect, useState } from 'react';
 import { Boxhtml, SmallInputdesign } from '../../components/Boxhtml';
 import '../../style/main.css'
 import { useDispatch,useSelector } from 'react-redux';
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-const columns = [
-    {
-        name: 'rollno',
-        selector: row => row.rollno ,
-        sortable: true,
-        width: '120px'
-    },
-    {
-        name: 'Student Name',
-        selector: row => row.studname,
-        sortable: true,
-    },
-    {
-        name: 'Class',
-        selector: row => row.class,
-        sortable: true,
-    },
-    {
-        name: 'father_name',
-        selector: row => row.father_name,
-        sortable: true,
-    },
-    {
-        name: 'Phone',
-        selector: row => row.contactno,
-        sortable: true,
-    },
-    {
-        name: 'dob',
-        selector: row => new Date(row.dob).getDate()+'/'+ new Date(row.dob).getUTCMonth()+ '/'+new Date(row.dob).getFullYear(),
-        sortable: true,
 
-    },
-    {
-        name: 'Action',
-        selector: row =><><BiSolidMessageSquareEdit style={{cursor:'pointer'}} color={colors.primary} size={25} />
-        <RiDeleteBin6Fill style={{marginLeft:'5px',cursor:'pointer'}} color={colors.danger} size={25} /></>,
-        sortable: true,
-    },
-    
-];
-
+export function DeleteStudent(idstudent) {
+    let result =window.confirm('Are you sure you want to Delete this Student Record?')
+    if(result){
+        console.log(idstudent,'idstudent')
+            DeleteReq(`student?idstudent=${idstudent}`)
+            .then(res=>{
+                alert('Student Deleted!')
+            })
+            .catch(e=>console.log)
+            window.reload()
+    }
+}
 export default function StudentList(props) {
     const [loading, setloading] = useState("Loading please wait..")
     const { teacherList,students,user } = useSelector((state) => state.RootRed)
     const dispatch= useDispatch()
-
+    const columns = [
+        // {
+        //     name: 'rollno',
+        //     selector: row => row.rollno ,
+        //     sortable: true,
+        //     width: '120px'
+        // },
+        {
+            name: 'Student Name',
+            selector: row => row.studname,
+            sortable: true,
+        },
+        {
+            name: 'Class',
+            selector: row => row.class,
+            sortable: true,
+        },
+        {
+            name: 'father_name',
+            selector: row => row.father_name,
+            sortable: true,
+        },
+        {
+            name: 'Phone',
+            selector: row => row.contactno,
+            sortable: true,
+        },
+        {
+            name: 'dob',
+            selector: row => new Date(row.dob).getDate()+'/'+ new Date(row.dob).getUTCMonth()+ '/'+new Date(row.dob).getFullYear(),
+            sortable: true,
+    
+        },
+        {
+            name: 'Action',
+            selector: row =><><BiSolidMessageSquareEdit  onClick={()=>EditStudent(row.idstudent)} style={{cursor:'pointer'}} color={colors.primary} size={25} />
+            <RiDeleteBin6Fill onClick={()=>DeleteStudent(row.idstudent)} style={{marginLeft:'5px',cursor:'pointer'}} color={colors.danger} size={25} /></>,
+            sortable: true,
+        },
+        
+    ];
     const [filtered, setfiltered] = useState([])
     const [Initialdata, setInitialdata] = useState([])
     const getdata = async (clas='1st') => {
@@ -84,9 +95,17 @@ export default function StudentList(props) {
         }
         else {getdata()}
     }, [])
-    const onRowClicked = () => {
+    const EditStudent=(idstudent)=>{
+console.log(idstudent,'id student')
+        dispatch({
+            type: 'setStudentDetails',
+            action: idstudent
+        })
         props.setValue(1)
+
+
     }
+
 
     return (
         <Boxhtml>
@@ -94,7 +113,7 @@ export default function StudentList(props) {
             noDataComponent={loading}
             columns={columns}
             data={filtered}
-            onRowDoubleClicked={onRowClicked}
+            // onRowDoubleClicked={onRowClicked}
             selectableRows
             selectableRowsHighlight
             highlightOnHover

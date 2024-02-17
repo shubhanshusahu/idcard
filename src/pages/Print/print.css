@@ -3,11 +3,11 @@
     width: max-content;
  }
  .text-on-image {
-    position: absolute;
-    right: 20px;
-    left: 89px;
-    width: max-content;
-    bottom: 11%;
+  position: absolute;
+  right: 20px;
+  left: 98px;
+  width: 107px;
+  bottom: 10%;
  }
  .dp{
    position: absolute;
@@ -20,11 +20,10 @@
    width: max-content;
  }
  .field{
-    height: 17px;
-    font-size: x-small;
-    text-wrap: pretty;
-    max-width: 86px;
-  
+  height: 17px;
+  font-size: xx-small;
+  text-wrap: pretty;
+  max-width: 104px;
  }
  .printPage{
    display: flex;

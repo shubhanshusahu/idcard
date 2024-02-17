@@ -9,6 +9,7 @@ import {
   useNavigate,
 
 } from "react-router-dom";
+import { RiLogoutCircleRFill } from "react-icons/ri";
 import './route.css'
 import { Sling as Hamburger } from 'hamburger-react'
 import Sidebar from '../components/navbar/Sidebar';
@@ -21,10 +22,12 @@ import School from '../pages/School';
 import Teachers from '../pages/Teacher';
 import StudentPage from '../pages/StudentReg';
 import Student from '../pages/Student/index';
+import AnchorElTooltips from '../components/tooltip';
 
 function Home() {
   let navigate = useNavigate();
    const {user}= useSelector((state: any)=>state.RootRed)
+   const dispatch = useDispatch()
 
   useEffect(() => {
 
@@ -33,11 +36,22 @@ function Home() {
     //   return;
     // }
   }, [])
+const Logout=()=>{
+  localStorage.setItem('user','null')
+  dispatch({
+    type: 'userlogin',
+    payload: null
+  })
+  dispatch({
+    type: 'navVisible',
+    payload: false
+  })
+  navigate('/login')
+}
 
-
-  return <div className="rightpart closehead">Hi {user?.username || ''}<span className='useravtar'><img 
-  // onClick={()=>{    navigate('/login')  }}
-   src="imag\Teacher.png" style={{width:'30px'}}/></span></div>;
+  return <div className="rightpart closehead">Hi {user?.username || ''}<span className='useravtar'>
+    <AnchorElTooltips title="Logout">
+    <RiLogoutCircleRFill  onClick={()=>Logout()}/></AnchorElTooltips></span></div>;
 }
 
 const Dashboard = () => {
