@@ -46,6 +46,8 @@ function a11yProps(index) {
 
 export default function Students() {
   const [value, setValue] = React.useState(0);
+  const [idstudent, setidstudent] = React.useState(0);
+
 
   const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -66,10 +68,10 @@ export default function Students() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <StudentList setValue={setValue}/>
+        <StudentList setValue={setValue} setidstudent={setidstudent}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <CreateStudent setValue={setValue}/>
+        <CreateStudent setValue={setValue} idstudent={idstudent}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <ImportStudents setValue={setValue}/>

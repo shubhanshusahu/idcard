@@ -4,33 +4,37 @@ import { DeleteReq, GetReq } from '../../components/HttpReqs';
 import { useEffect, useState } from 'react';
 import { Boxhtml, SmallInputdesign } from '../../components/Boxhtml';
 import '../../style/main.css'
-import { useDispatch,useSelector } from 'react-redux';
+import './student.css'
+import { useDispatch, useSelector } from 'react-redux';
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
+
 export function DeleteStudent(idstudent) {
-    let result =window.confirm('Are you sure you want to Delete this Student Record?')
-    if(result){
-        console.log(idstudent,'idstudent')
-            DeleteReq(`student?idstudent=${idstudent}`)
-            .then(res=>{
+    let result = window.confirm('Are you sure you want to Delete this Student Record?')
+    if (result) {
+        console.log(idstudent, 'idstudent')
+        DeleteReq(`student?idstudent=${idstudent}`)
+            .then(res => {
                 alert('Student Deleted!')
             })
-            .catch(e=>console.log)
-            window.reload()
+            .catch(e => console.log)
+        window.reload()
     }
 }
 export default function StudentList(props) {
     const [loading, setloading] = useState("Loading please wait..")
-    const { teacherList,students,user } = useSelector((state) => state.RootRed)
-    const dispatch= useDispatch()
+  const baseUrl = data.baseUrl
+
+    const { teacherList, students, user } = useSelector((state) => state.RootRed)
+    const dispatch = useDispatch()
     const columns = [
-        // {
-        //     name: 'rollno',
-        //     selector: row => row.rollno ,
-        //     sortable: true,
-        //     width: '120px'
-        // },
+        {
+            name: 'Photo',
+            selector: row =>  row.pic==""?'':<img className='photo' src ={baseUrl+'uploads/'+row?.pic} alt="NA"/> ,
+            sortable: true,
+            width: '120px'
+        },
         {
             name: 'Student Name',
             selector: row => row.studname,
@@ -53,34 +57,34 @@ export default function StudentList(props) {
         },
         {
             name: 'dob',
-            selector: row => new Date(row.dob).getDate()+'/'+ new Date(row.dob).getUTCMonth()+ '/'+new Date(row.dob).getFullYear(),
+            selector: row => new Date(row.dob).getDate() + '/' + new Date(row.dob).getUTCMonth() + '/' + new Date(row.dob).getFullYear(),
             sortable: true,
-    
+
         },
         {
             name: 'Action',
-            selector: row =><><BiSolidMessageSquareEdit  onClick={()=>EditStudent(row.idstudent)} style={{cursor:'pointer'}} color={colors.primary} size={25} />
-            <RiDeleteBin6Fill onClick={()=>DeleteStudent(row.idstudent)} style={{marginLeft:'5px',cursor:'pointer'}} color={colors.danger} size={25} /></>,
+            selector: row => <><BiSolidMessageSquareEdit onClick={() => EditStudent(row.idstudent)} style={{ cursor: 'pointer' }} color={colors.primary} size={25} />
+                <RiDeleteBin6Fill onClick={() => DeleteStudent(row.idstudent)} style={{ marginLeft: '5px', cursor: 'pointer' }} color={colors.danger} size={25} /></>,
             sortable: true,
         },
-        
+
     ];
     const [filtered, setfiltered] = useState([])
     const [Initialdata, setInitialdata] = useState([])
-    const getdata = async (clas='1st') => {
+    const getdata = async (clas = '1st') => {
         try {
             let response = await GetReq(`studentsbyschoolid?schoolid=${user.schoolid}&clas=${clas}`)
             setfiltered(response.data)
             setInitialdata(response.data)
-            console.log(response.data,'student list')
-            if (response.data.length==0) {
+            console.log(response.data, 'student list')
+            if (response.data.length == 0) {
                 setloading("No data found!")
             }
             else
-            dispatch({
-                type: 'getStudents',
-                payload: response.data
-            })
+                dispatch({
+                    type: 'getStudents',
+                    payload: response.data
+                })
         }
         catch (e) {
             setloading("No data found..")
@@ -88,20 +92,21 @@ export default function StudentList(props) {
         }
     }
     useEffect(() => {
-        console.log(students,'student list')
-        if(students?.length>0){
+        console.log(students, 'student list')
+        if (students?.length > 0) {
             setfiltered(students)
             setInitialdata(students)
         }
-        else {getdata()}
+        else { getdata() }
     }, [])
-    const EditStudent=(idstudent)=>{
-console.log(idstudent,'id student')
-        dispatch({
+    const EditStudent = async (idstudent) => {
+        console.log(idstudent, 'id student')
+        let res = await dispatch({
             type: 'setStudentDetails',
             action: idstudent
         })
         props.setValue(1)
+        props.setidstudent(idstudent)
 
 
     }
@@ -109,31 +114,31 @@ console.log(idstudent,'id student')
 
     return (
         <Boxhtml>
-        <DataTable
-            noDataComponent={loading}
-            columns={columns}
-            data={filtered}
-            // onRowDoubleClicked={onRowClicked}
-            selectableRows
-            selectableRowsHighlight
-            highlightOnHover
-            pagination  
-            customStyles={{}}
-            fixedHeader
-            noHeader={false}
-            subHeader
-            subHeaderComponent={  <div style={{display:'flex'}}>
-                <label className='lable' style={{width :'150px'}}>Select Class</label>
-                <select className="form-control"
-                    onChange={e=>getdata(e.target.value)}
-                >
-                    <option value="1st">1st</option>
-                    {data.class.map(cls=> <option value={cls}>{cls}</option>)}
+            <DataTable
+                noDataComponent={loading}
+                columns={columns}
+                data={filtered}
+                // onRowDoubleClicked={onRowClicked}
+                selectableRows
+                selectableRowsHighlight
+                highlightOnHover
+                pagination
+                customStyles={{}}
+                fixedHeader
+                noHeader={false}
+                subHeader
+                subHeaderComponent={<div style={{ display: 'flex' }}>
+                    <label className='lable' style={{ width: '150px' }}>Select Class</label>
+                    <select className="form-control"
+                        onChange={e => getdata(e.target.value)}
+                    >
+                        <option value="1st">1st</option>
+                        {data.class.map(cls => <option value={cls}>{cls}</option>)}
 
-                </select>
-               
-            </div>}
-        />
+                    </select>
+
+                </div>}
+            />
         </Boxhtml>
     );
 };

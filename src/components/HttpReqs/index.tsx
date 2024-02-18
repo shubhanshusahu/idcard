@@ -16,6 +16,18 @@ export function PostReq(paramQuery: string, data: any) {
 
     return res;
 }
+export function Putreq(paramQuery: string, data: any) {
+    const config = { headers: {} }
+    const res = axios.put(`${base}${paramQuery}`, data, config)
+    res.then(res => res)
+        .catch(e => {
+            alert('Something went wrong ' + e.message)
+            console.log(e)
+        }
+        )
+
+    return res;
+}
 
 export function GetReq(paramQuery: string) {
     const res = axios.get(`${base}${paramQuery}`)

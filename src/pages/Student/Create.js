@@ -13,7 +13,7 @@ export default function CreateStudent(props) {
 
     return (
         <Boxhtml>
-            <StudentReg/>    
+            <StudentReg idstudent={props.idstudent}/>    
         </Boxhtml>
     )
 }

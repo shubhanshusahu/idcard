@@ -13,7 +13,7 @@ import { data } from '../../fixedData';
 
 import * as Aiicons from 'react-icons/ai';
 
-import { DeleteReq, GetReq } from "../HttpReqs";
+import { DeleteReq, GetReq, Putreq } from "../HttpReqs";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "../ConfirmDialog";
 import { useMemo } from 'react'
@@ -28,7 +28,7 @@ export default function StudentReg(props: any) {
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
     const [file, setFile] = useState('');
-    const { companyID,currentPatient,currentStudentDetails} = useSelector((state: any) => state.RootRed)
+    const { schoolList,currentPatient,currentStudentDetails} = useSelector((state: any) => state.RootRed)
     const defaultdata = {
         "instituteid":1,
         "studname":"",
@@ -72,6 +72,9 @@ export default function StudentReg(props: any) {
             });
     }
     const setStudentinForm=(currentStudentDetails:any)=>{
+        let dobrecd=new Date((currentStudentDetails.dob).toString())
+        // dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate()
+        console.log(dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate(),'date')
         console.log(currentStudentDetails,'inside setvalue')
         setValue( "instituteid",currentStudentDetails.instituteid)
         setValue( "studname",currentStudentDetails.studname)
@@ -87,11 +90,18 @@ export default function StudentReg(props: any) {
         setValue( "pincode",currentStudentDetails.pincode)
         setValue( "gender",currentStudentDetails.gender)
         setValue( "contactno",currentStudentDetails.contactno)
+        setFile( baseUrl+'uploads/'+currentStudentDetails?.pic)
     }
     useEffect(() => {
+        if(schoolList.length==0){
+            getSchools()
+        }
+        else{
+            setschools(schoolList)
+        }
         console.log(currentStudentDetails,'current student id')
-        if (currentStudentDetails != 0) {
-            GetReq('student?idstudent='+currentStudentDetails)
+        if (props.idstudent != 0) {
+            GetReq('student?idstudent='+props.idstudent)
             .then(res=>{
                 console.log('getting student details',res) 
                 if(res.data.length)
@@ -101,11 +111,11 @@ export default function StudentReg(props: any) {
                 //     action: res.data[0]
                 // })
             })
-            console.log(currentStudentDetails,'current student selected to edit')
+            console.log(props.idstudent,'current student selected to edit')
           
         }
        
-        getSchools()
+
     }, [])
 
     
@@ -117,7 +127,24 @@ export default function StudentReg(props: any) {
             type:'changeCurrentPatient',
             payload:null
             });
+            props.idstudent=0
             reset()
+    }
+    const update = ()=>{
+        console.log(getValues(),'get vlaues')
+        Putreq( 'student?idstudent='+props.idstudent,getValues())
+        .then(function (response: any) {
+            if(response.status==200){
+                alert('Student Updated!')
+                props.setValue(0)
+            }
+            console.log(response, "this one");
+        })
+
+        .catch(function (error: any) {
+            console.log(error);
+            alert("Account not created!"+ error.response)
+        });
     }
     const createStudent = async (data: any) => {
         const myRenamedFile = new File([studentImg], `${data.studname}${data.class}${data.father_name}.jpg`);
@@ -218,7 +245,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                             {...register("instituteid", { required: true })}
                         >
                             <option value="">Select</option>
-                            {schools.map(schl=> <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}</option>)}
+                            {schools.map(schl=> <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}-{schl.idSchool}</option>)}
                         </select>
                         {errors.instituteid && <span className='errormsg'>This field is required</span>}
                         </BigInputdesign>
@@ -235,6 +262,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                                        <img className="imgPreview" src={file} />
                                     </div>
                                 </div>}
+                                
                     
                     <SmallInputdesign>
                         <label>First Name</label>
@@ -367,7 +395,12 @@ setFile(URL.createObjectURL(e.target.files[0]));
                         <div className="col-sm-12 col-md-12 col-xs-12 text-right">
                             <div className="text-right classrgsetting" style={{ float: 'right', textAlign: 'right' }}>
 
-                                <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>
+                               { props.idstudent != 0 ? 
+                               
+                               <button type="button" className="btn btn-warning btnsubmitdetails" onClick={()=>update()}>  Update </button>:
+                               <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>
+                            
+                            }
                                 <button type="button" onClick={()=>resetForm()} className="btn btn-success btnsx">  Reset </button>
                                {/* {location.pathname!=='/RegisterYourself/form' && <button type='button' className="btn btn-danger " onClick={() => deletePatient()} value="delete">  Delete</button>} */}
                                {/* <button type='button' onClick={() => navigate(-1)} className="btn btn-success btnbackresult">Back</button> */}
