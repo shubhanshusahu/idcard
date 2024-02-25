@@ -167,7 +167,7 @@ export default function StudentReg(props: any) {
 
             .catch(function (error: any) {
                 console.log(error);
-                alert("Account not created!" + error.response)
+                alert(error.response)
             });
     }
     const createStudent = async (data: any) => {

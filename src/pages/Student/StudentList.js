@@ -19,7 +19,6 @@ export function DeleteStudent(idstudent) {
                 alert('Student Deleted!')
             })
             .catch(e => console.log)
-        window.reload()
     }
 }
 export default function StudentList(props) {
@@ -64,7 +63,7 @@ export default function StudentList(props) {
         {
             name: 'Action',
             selector: row => <><BiSolidMessageSquareEdit onClick={() => EditStudent(row.idstudent)} style={{ cursor: 'pointer' }} color={colors.primary} size={25} />
-                <RiDeleteBin6Fill onClick={() => DeleteStudent(row.idstudent)} style={{ marginLeft: '5px', cursor: 'pointer' }} color={colors.danger} size={25} /></>,
+                <RiDeleteBin6Fill onClick={() =>{ DeleteStudent(row.idstudent);getdata(row.class)} } style={{ marginLeft: '5px', cursor: 'pointer' }} color={colors.danger} size={25} /></>,
             sortable: true,
         },
 
