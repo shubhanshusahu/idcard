@@ -18,6 +18,7 @@ background-image: url("https://wallpapers.com/images/hd/abstract-blue-background
 .useravtar{
     font-size: 25px;
     font-weight: bold;
+    margin: 0px;
 }
 
 
@@ -44,3 +45,17 @@ background-image: url("https://wallpapers.com/images/hd/abstract-blue-background
     width: 98%;
     margin: 21px auto;
   }
+.username{
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+.logout{
+    transition: 200ms ease-in-out;
+}
+.logout:hover{
+background-color: rgb(210, 47, 22);
+border-radius: 15px;
+padding:5px;
+transition: 200ms ease-in-out;
+}

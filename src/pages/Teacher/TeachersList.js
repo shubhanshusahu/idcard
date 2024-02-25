@@ -42,10 +42,49 @@ const columns = [
     },
     
 ];
-
+const columnsForAdmin = [
+    {
+        name: 'ID',
+        selector: row => row.userid,
+        sortable: true,
+        width: '70px'
+    },
+    {
+        name: 'Teacher/ Admin Name',
+        selector: row => row.username,
+        sortable: true,
+    },
+    {
+        name: 'Email',
+        selector: row => row.usermail,
+        sortable: true,
+    },
+    {
+        name: 'Password',
+        selector: row => row.userpass,
+        sortable: true,
+    },
+    {
+        name: 'Phone',
+        selector: row => row.userphone,
+        sortable: true,
+    },
+    {
+        name: 'School/Institute ID',
+        selector: row => row.schoolid,
+        sortable: true,
+    },
+    {
+        name: 'Action',
+        selector: row =><><BiSolidMessageSquareEdit style={{cursor:'pointer'}} color={colors.primary} size={25} />
+        <RiDeleteBin6Fill style={{marginLeft:'5px',cursor:'pointer'}} color={colors.danger} size={25} /></>,
+        sortable: true,
+    },
+    
+];
 export default function TeachersList(props) {
     const [loading, setloading] = useState("Loading please wait..")
-    const { teacherList,students } = useSelector((state) => state.RootRed)
+    const { teacherList,students,user } = useSelector((state) => state.RootRed)
     const dispatch= useDispatch()
 
     const [filtered, setfiltered] = useState([])
@@ -71,6 +110,11 @@ export default function TeachersList(props) {
         }
     }
     useEffect(() => {
+        dispatch({
+            type: 'userlogin',
+            payload: JSON.parse(localStorage.getItem('user'))
+        })
+
         console.log(teacherList,'schoolist')
         if(teacherList?.length>0){
             setfiltered(teacherList)
@@ -86,7 +130,7 @@ export default function TeachersList(props) {
         <Boxhtml>
         <DataTable
             noDataComponent={loading}
-            columns={columns}
+            columns={user.userrole == 'admin'? columnsForAdmin:columns}
             data={filtered}
             onRowDoubleClicked={onRowClicked}
             selectableRows

@@ -30,3 +30,7 @@ export const colors ={
     primary:'#243A6C',
     danger : 'red'
 }
+export const studentFields =[
+   'instituteid','studname','rollno','enrollno','class','section','father_name',
+   'mother_name','blood_group','dob','address','pincode','gender','contactno','pic'
+]

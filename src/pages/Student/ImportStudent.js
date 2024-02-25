@@ -6,10 +6,14 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import '../../App.css';
 import { Boxhtml } from "../../components/Boxhtml";
+import { PostReq } from "../../components/HttpReqs";
+import { studentFields } from "../../fixedData";
 
 function ImportStudents() {
 
     const [data, setData] = useState([]);
+    const [uploadbtn, setuploadbtn] = useState(false);
+
 
     const handleFileUpload = (e) => {
         const reader = new FileReader();
@@ -20,9 +24,37 @@ function ImportStudents() {
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const parsedData = XLSX.utils.sheet_to_json(sheet);
-            setData(parsedData);
             console.log(parsedData, 'data Imported')
+            let FieldsFromExcel = Object.keys(parsedData[0])
+            let flag =0
+            FieldsFromExcel.forEach(colname => {
+                if(studentFields.indexOf(colname)>=0){
+                        console.log(colname)
+                }
+                else{
+                    alert(colname+' column not found in Database, please remove from excel or correct the column name!')
+                    flag =1;
+                }
+            });
+
+            if(flag ==1){
+                
+            }
+            else{
+            setData(parsedData);
+            setuploadbtn(true)
+            }
         };
+    }
+    const UploadExcelData =()=>{
+        let res =window.confirm('Are you sure to Upload this data?')
+        if(res){
+            PostReq('importexcel',data)
+            .then(res=>{console.log(res)
+            alert('Excel Data Uploaded Successfully')
+            })
+            .catch(err=>console.log)
+        }
     }
 
     return (
@@ -35,9 +67,10 @@ function ImportStudents() {
                     accept=".xlsx, .xls"
                     onChange={handleFileUpload}
                 />
-                <Button type='file' variant="contained" color="success"
+                { uploadbtn && <Button type='file' variant="contained" color="success"
                  endIcon={< CloudUploadIcon/>}
-                >Upload Student's data</Button>
+                 onClick={()=>UploadExcelData()}
+                >Upload Student's data</Button>}
             </Stack>
 
 

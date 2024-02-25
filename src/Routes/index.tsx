@@ -9,7 +9,7 @@ import {
   useNavigate,
 
 } from "react-router-dom";
-import { RiLogoutCircleRFill } from "react-icons/ri";
+import { FaPowerOff } from "react-icons/fa6";
 import './route.css'
 import { Sling as Hamburger } from 'hamburger-react'
 import Sidebar from '../components/navbar/Sidebar';
@@ -49,9 +49,9 @@ const Logout=()=>{
   navigate('/login')
 }
 
-  return <div className="rightpart closehead">Hi {user?.username || ''}<span className='useravtar'>
-    <AnchorElTooltips title="Logout">
-    <RiLogoutCircleRFill  onClick={()=>Logout()}/></AnchorElTooltips></span></div>;
+  return <div className="rightpart closehead"><div className="username"> Hi {user?.username || ''}</div> <span className='useravtar'>
+    <AnchorElTooltips title="Logout" >
+    <FaPowerOff  onClick={()=>Logout()}  className='logout'/></AnchorElTooltips></span></div>;
 }
 
 const Dashboard = () => {

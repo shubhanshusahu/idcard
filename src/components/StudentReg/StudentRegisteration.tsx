@@ -28,135 +28,159 @@ export default function StudentReg(props: any) {
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
     const [file, setFile] = useState('');
-    const { schoolList,currentPatient,currentStudentDetails} = useSelector((state: any) => state.RootRed)
+    const { schoolList, currentPatient, currentStudentDetails } = useSelector((state: any) => state.RootRed)
     const defaultdata = {
-        "instituteid":1,
-        "studname":"",
-        "rollno":"",
-        "enrollno":"",
-        "class":0,
-        "section":"",
-        "father_name":"",
-        "mother_name":"",
-        "blood_group":"",
-        "dob":"",
-        "address":"",
-        "pincode":"",
-        "gender":"",
-        "contactno":"",
-        
+        "instituteid": 1,
+        "studname": "",
+        "rollno": "",
+        "enrollno": "",
+        "class": 0,
+        "section": "",
+        "father_name": "",
+        "mother_name": "",
+        "blood_group": "",
+        "dob": "",
+        "address": "",
+        "pincode": "",
+        "gender": "",
+        "contactno": "",
+
     }
     const { register, handleSubmit, watch, setValue, getValues, reset, formState: { errors } } = useForm({
         defaultValues: defaultdata
     });
     // console.log(getValues('patient_id'))
-    const [lastName, setlastName] = useState("")
+    const [currStudent, setcurrStudent] = useState(defaultdata)
     const [address2, setaddress2] = useState("")
 
     let navigate = useNavigate();
     const location = useLocation();
-    const [studentImg,setStudentImg ] = useState('')
+    const [studentImg, setStudentImg] = useState('')
     const [schools, setschools] = useState([{
-        SchoolAddress:"",
-        SchoolRedgNo:"",
-        SchoolnName:"",
-        idSchool:0
+        SchoolAddress: "",
+        SchoolRedgNo: "",
+        SchoolnName: "",
+        idSchool: 0
     }])
-//   const options = useMemo(() => countryList().getData(), [])
-    const getSchools=async()=>{
+    //   const options = useMemo(() => countryList().getData(), [])
+    const getSchools = async () => {
         let scls = await GetReq('schools')
         setschools(scls.data)
         dispatch({
-            type:'getSchools',
-            payload:scls.data
-            });
+            type: 'getSchools',
+            payload: scls.data
+        });
     }
-    const setStudentinForm=(currentStudentDetails:any)=>{
-        let dobrecd=new Date((currentStudentDetails.dob).toString())
+    const setStudentinForm = (currentStudentDetails: any) => {
+        // let dobrecd=new Date((currentStudentDetails.dob).toString())
         // dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate()
-        console.log(dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate(),'date')
-        console.log(currentStudentDetails,'inside setvalue')
-        setValue( "instituteid",currentStudentDetails.instituteid)
-        setValue( "studname",currentStudentDetails.studname)
-        setValue( "rollno",currentStudentDetails.rollno)
-        setValue( "enrollno",currentStudentDetails.enrollno)
-        setValue( "class",currentStudentDetails.class)
-        setValue( "section",currentStudentDetails.section)
-        setValue( "father_name",currentStudentDetails.father_name)
-        setValue( "mother_name",currentStudentDetails.mother_name)
-        setValue( "blood_group",currentStudentDetails.blood_group)
-        setValue( "dob",currentStudentDetails.dob)
-        setValue( "address",currentStudentDetails.address)
-        setValue( "pincode",currentStudentDetails.pincode)
-        setValue( "gender",currentStudentDetails.gender)
-        setValue( "contactno",currentStudentDetails.contactno)
-        setFile( baseUrl+'uploads/'+currentStudentDetails?.pic)
+        // console.log(dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate(),'date')
+        console.log(currentStudentDetails, 'inside setvalue')
+        setValue("instituteid", currentStudentDetails.instituteid)
+        setValue("studname", currentStudentDetails.studname)
+        setValue("rollno", currentStudentDetails.rollno)
+        setValue("enrollno", currentStudentDetails.enrollno)
+        setValue("class", currentStudentDetails.class)
+        setValue("section", currentStudentDetails.section)
+        setValue("father_name", currentStudentDetails.father_name)
+        setValue("mother_name", currentStudentDetails.mother_name)
+        setValue("blood_group", currentStudentDetails.blood_group)
+        setValue("dob", currentStudentDetails.dob)
+        setValue("address", currentStudentDetails.address)
+        setValue("pincode", currentStudentDetails.pincode)
+        setValue("gender", currentStudentDetails.gender)
+        setValue("contactno", currentStudentDetails.contactno)
+        setFile(baseUrl + 'uploads/' + currentStudentDetails?.pic)
     }
     useEffect(() => {
-        if(schoolList.length==0){
+        if (schoolList.length == 0) {
             getSchools()
         }
-        else{
+        else {
             setschools(schoolList)
         }
-        console.log(currentStudentDetails,'current student id')
+        console.log(currentStudentDetails, 'current student id')
         if (props.idstudent != 0) {
-            GetReq('student?idstudent='+props.idstudent)
-            .then(res=>{
-                console.log('getting student details',res) 
-                if(res.data.length)
-                setStudentinForm(res.data[0])
-                // dispatch({
-                //     type: 'setStudentDetails',
-                //     action: res.data[0]
-                // })
-            })
-            console.log(props.idstudent,'current student selected to edit')
-          
+            GetReq('student?idstudent=' + props.idstudent)
+                .then(res => {
+                    console.log('getting student details', res)
+                    if (res.data.length)
+                        setStudentinForm(res.data[0])
+                        setcurrStudent(res.data[0])
+                    dispatch({
+                        type: 'setStudentDetails',
+                        action: res.data[0]
+                    })
+                })
+            console.log(props.idstudent, 'current student selected to edit')
+
         }
-       
+
 
     }, [])
 
-    
+
     const filehandle = (e: any) => {
         setimg(e.target.files[0])
     }
-    const resetForm=()=>{
+    const resetForm = () => {
         dispatch({
-            type:'changeCurrentPatient',
-            payload:null
-            });
-            props.idstudent=0
-            reset()
-    }
-    const update = ()=>{
-        console.log(getValues(),'get vlaues')
-        Putreq( 'student?idstudent='+props.idstudent,getValues())
-        .then(function (response: any) {
-            if(response.status==200){
-                alert('Student Updated!')
-                props.setValue(0)
-            }
-            console.log(response, "this one");
-        })
-
-        .catch(function (error: any) {
-            console.log(error);
-            alert("Account not created!"+ error.response)
+            type: 'changeCurrentPatient',
+            payload: null
         });
+        props.idstudent = 0
+        reset()
+    }
+
+    const UpdatePhoto = () => {
+        console.log(currStudent)
+        const myRenamedFile = new File([studentImg], `${currStudent.studname}${currStudent.class}${currStudent.father_name}.jpg`);
+        console.log(studentImg)
+        try {
+            var formData = new FormData();
+
+            formData.append("photo", myRenamedFile)
+            formData.append("data", JSON.stringify({ idstudent: props.idstudent }));
+            console.log(formData, 'formData')
+            const config = { headers: { "Content-Type": "multipart/form-data", } }
+            Putreq('studentPhoto', formData)
+                .then(res => {
+                    console.log(res)
+                    alert(res.data.message)
+                })
+                .catch(err => console.log(err))
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+    const update = () => {
+        console.log(getValues(), 'get vlaues')
+        Putreq('student?idstudent=' + props.idstudent, getValues())
+            .then(function (response: any) {
+                if (response.status == 201) {
+                    alert('Student Updated!')
+                    props.setValue(0)
+                }
+                console.log(response, "this one");
+            })
+
+            .catch(function (error: any) {
+                console.log(error);
+                alert("Account not created!" + error.response)
+            });
     }
     const createStudent = async (data: any) => {
         const myRenamedFile = new File([studentImg], `${data.studname}${data.class}${data.father_name}.jpg`);
         console.log(studentImg)
         try {
             var formData = new FormData();
-            
-            formData.append("photo",myRenamedFile)
-            formData.append("data",JSON.stringify(Object.values(data)));
-            console.log(formData,'formData')
-            const config = { headers: {  "Content-Type": "multipart/form-data", } }
-            axios.post(baseUrl + 'student',formData,config
+
+            formData.append("photo", myRenamedFile)
+            formData.append("data", JSON.stringify(Object.values(data)));
+            console.log(formData, 'formData')
+            const config = { headers: { "Content-Type": "multipart/form-data", } }
+            axios.post(baseUrl + 'student', formData, config
                 // {
                 //     "instituteid":data.instituteid,
                 //     "studname":data.studname,
@@ -175,9 +199,9 @@ export default function StudentReg(props: any) {
                 //     "contactno":data.contactno,
 
                 // },
-                )
+            )
                 .then(function (response: any) {
-                    if(response.status==201){
+                    if (response.status == 201) {
                         alert('Student Registered!')
                     }
                     console.log(response, "this one");
@@ -185,11 +209,11 @@ export default function StudentReg(props: any) {
 
                 .catch(function (error: any) {
                     console.log(error);
-                    alert("Account not created!"+ error.response)
+                    alert("Account not created!" + error.response)
                 });
         }
         catch (e) {
-            alert("Account not created!"+ 'Please try again')
+            alert("Account not created!" + 'Please try again')
         }
     };
 
@@ -218,7 +242,7 @@ export default function StudentReg(props: any) {
                 .catch(function (error: any) {
                     //   infoNoti("Account not created!",error.response.data.detail)
                     console.log(error);
-                    alert("Patient not found!  "+ error.response.data.detail)
+                    alert("Patient not found!  " + error.response.data.detail)
                 })
 
         }
@@ -229,41 +253,41 @@ export default function StudentReg(props: any) {
     };
 
 
-const fileHandle = (e:any)=>{
-console.log(e.target.files[0])
-setStudentImg(e.target.files[0])
-setFile(URL.createObjectURL(e.target.files[0]));
-}
+    const fileHandle = (e: any) => {
+        console.log(e.target.files[0])
+        setStudentImg(e.target.files[0])
+        setFile(URL.createObjectURL(e.target.files[0]));
+    }
     return (
         <Boxhtml>
             <form onSubmit={handleSubmit(createStudent)}>
                 <h3 className="heading">Student Form</h3>
                 <div className="row gutters">
-                <BigInputdesign>
-                <label> Select your School</label>
+                    <BigInputdesign>
+                        <label> Select your School</label>
                         <select className="form-control"
                             {...register("instituteid", { required: true })}
                         >
                             <option value="">Select</option>
-                            {schools.map(schl=> <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}-{schl.idSchool}</option>)}
+                            {schools.map(schl => <option value={schl.idSchool}>{schl.SchoolnName} -{schl.SchoolAddress}-{schl.idSchool}</option>)}
                         </select>
                         {errors.instituteid && <span className='errormsg'>This field is required</span>}
-                        </BigInputdesign>
+                    </BigInputdesign>
                     <SmallInputdesign>
                         <label>Upload Image</label>
                         <input type="file" accept="image/*" className="form-control" id="education" placeholder="Select Image..."
-                        onChange={fileHandle}
-                            />
+                            onChange={fileHandle}
+                        />
                         {/* {errors. && <span className='errormsg'>Image is required</span>} */}
                     </SmallInputdesign>
-                    
-                        {file &&  <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-                                    <div className="form-group acenter text-center">
-                                       <img className="imgPreview" src={file} />
-                                    </div>
-                                </div>}
-                                
-                    
+
+                    {file && <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                        <div className="form-group acenter text-center">
+                            <img className="imgPreview" src={file} />
+                        </div>
+                    </div>}
+
+
                     <SmallInputdesign>
                         <label>First Name</label>
                         <input className="form-control" id="education" placeholder="Name..."
@@ -300,7 +324,7 @@ setFile(URL.createObjectURL(e.target.files[0]));
                             {...register("class", { required: true })}
                         >
                             <option value="">Select Class</option>
-                            {data.class.map(cls=> <option value={cls}>{cls}</option>)}
+                            {data.class.map(cls => <option value={cls}>{cls}</option>)}
 
                         </select>
                         {errors.class && <span className='errormsg'>This field is required</span>}
@@ -377,9 +401,9 @@ setFile(URL.createObjectURL(e.target.files[0]));
                                 required: true, minLength: 3, maxLength: 100,
                                 pattern: /[A-Za-zÀ-ÚÄ-Ü]/, //letters mandatory(can have numbers)
                             })} />
-            
+
                         {errors.address && <span className='errormsg'>Address is Invalid</span>}
-                    {/* </SmallInputdesign> */}
+                        {/* </SmallInputdesign> */}
                     </div>
 
 
@@ -395,18 +419,18 @@ setFile(URL.createObjectURL(e.target.files[0]));
                         <div className="col-sm-12 col-md-12 col-xs-12 text-right">
                             <div className="text-right classrgsetting" style={{ float: 'right', textAlign: 'right' }}>
 
-                               { props.idstudent != 0 ? 
-                               
-                               <button type="button" className="btn btn-warning btnsubmitdetails" onClick={()=>update()}>  Update </button>:
-                               <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>
-                            
-                            }
-                                <button type="button" onClick={()=>resetForm()} className="btn btn-success btnsx">  Reset </button>
-                               {/* {location.pathname!=='/RegisterYourself/form' && <button type='button' className="btn btn-danger " onClick={() => deletePatient()} value="delete">  Delete</button>} */}
-                               {/* <button type='button' onClick={() => navigate(-1)} className="btn btn-success btnbackresult">Back</button> */}
+                                {props.idstudent != 0 ?
+                                    <><button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>  Update/Upload Photo </button>
+                                        <button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => update()}>  Update </button></> :
+                                    <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>
+
+                                }
+                                <button type="button" onClick={() => resetForm()} className="btn btn-success btnsx">  Reset </button>
+                                {/* {location.pathname!=='/RegisterYourself/form' && <button type='button' className="btn btn-danger " onClick={() => deletePatient()} value="delete">  Delete</button>} */}
+                                {/* <button type='button' onClick={() => navigate(-1)} className="btn btn-success btnbackresult">Back</button> */}
                                 {/* <button type="submit" className="btn btn-primary btn-lg btn-block">Submit </button> */}
                             </div>
-                          
+
                         </div>
 
                     </div>
