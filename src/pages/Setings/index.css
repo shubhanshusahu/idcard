@@ -1,0 +1,13 @@
+.parent{
+height: 100px;
+width: 100px;
+    border: 1px solid;
+    display: grid;
+    place-items: center ;
+}
+.child{
+    position :absolute;
+    height: 50px;
+    border: 1px solid;
+width: 50px;
+}

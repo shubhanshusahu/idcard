@@ -23,6 +23,7 @@ import Teachers from '../pages/Teacher';
 import StudentPage from '../pages/StudentReg';
 import Student from '../pages/Student/index';
 import AnchorElTooltips from '../components/tooltip';
+import Settings from '../pages/Setings';
 
 function Home() {
   let navigate = useNavigate();
@@ -119,7 +120,7 @@ export default function Rout() {
               <Route path="/school" element={<School />} />
               <Route path="/teacher" element={<Teachers />} />
               <Route path="/students" element={<Student />} />
-
+              <Route path="/settings" element={<Settings />} />
 
 
 

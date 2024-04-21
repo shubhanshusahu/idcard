@@ -58,7 +58,7 @@ export const SidebarData = [
   },
   {
     title: 'Settings',
-    path: '/Settings',
+    path: '/settings',
     role:'admin',
     icon: <img src="imag/setting.png" className='imagesize'/>,
     cName: 'nav-text',

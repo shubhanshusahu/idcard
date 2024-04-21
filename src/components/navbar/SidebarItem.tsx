@@ -36,7 +36,12 @@ export default function SidebarItem(props:any){
                 if(device==='mobile')
                 {dispatch({
                     type:'togglenavbar'
-                })}
+                })
+                dispatch({
+                    type:'clearNavChange'
+                })
+                
+            }
             }}>
                <Tooltip title={props.item.title}>   {props.item.icon}</Tooltip> 
                 {sidebar ? <span className={"opentitle " + props.item.cName}>{props.item.title}</span> : ''}   

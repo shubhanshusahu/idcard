@@ -75,7 +75,7 @@ export default function StudentReg(props: any) {
         // let dobrecd=new Date((currentStudentDetails.dob).toString())
         // dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate()
         // console.log(dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate(),'date')
-        console.log(currentStudentDetails, 'inside setvalue')
+        console.log( currentStudentDetails.dob, 'dob')
         setValue("instituteid", currentStudentDetails.instituteid)
         setValue("studname", currentStudentDetails.studname)
         setValue("rollno", currentStudentDetails.rollno)
@@ -85,7 +85,7 @@ export default function StudentReg(props: any) {
         setValue("father_name", currentStudentDetails.father_name)
         setValue("mother_name", currentStudentDetails.mother_name)
         setValue("blood_group", currentStudentDetails.blood_group)
-        setValue("dob", currentStudentDetails.dob)
+        setValue("dob",new Date(currentStudentDetails.dob +"T00:00:00").toDateString())
         setValue("address", currentStudentDetails.address)
         setValue("pincode", currentStudentDetails.pincode)
         setValue("gender", currentStudentDetails.gender)
@@ -222,6 +222,7 @@ export default function StudentReg(props: any) {
             axios.get(baseUrl + `/rpatient/qwe123?patient_id=${patient_id}&urn=${urn}`)
                 .then(function (response: any) {
                     if (response.data) {
+                        console.log(response.data.dob,'dOb')
                         setValue("studname", response.data.name)
                         setValue("address", response.data.patient_id)
                         setValue("blood_group", response.data.date_of_birth)
@@ -419,7 +420,7 @@ export default function StudentReg(props: any) {
                         <div className="col-sm-12 col-md-12 col-xs-12 text-right">
                             <div className="text-right classrgsetting" style={{ float: 'right', textAlign: 'right' }}>
 
-                                {props.idstudent != 0 ?
+                                {props.idstudent != 0 && props.idstudent !=  undefined  ?
                                     <><button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>  Update/Upload Photo </button>
                                         <button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => update()}>  Update </button></> :
                                     <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>

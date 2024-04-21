@@ -43,6 +43,8 @@ const setStudentDetails = createAction<number>("setStudentDetails");
 const getStudents = createAction<number>("getStudents");
 
 const togglenavbar = createAction<number>("togglenavbar");
+const clearNavChange = createAction<number>("clearNavChange");
+
 const navVisible = createAction<number>("navVisible");
 
 
@@ -68,6 +70,10 @@ const rootReducer = createReducer(initialState,(builder) => {
     .addCase(togglenavbar, (state, action:any) => {
 
         state.sidebar = !state.sidebar;
+     })
+     .addCase(clearNavChange, (state, action:any) => {
+
+        state.currentStudentDetails = 0;
      })
      .addCase(navVisible, (state, action:any) => {
 
