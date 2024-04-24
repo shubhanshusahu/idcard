@@ -3,8 +3,7 @@ import { useState } from 'react'
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../style/main.css'
-
-// import successNoti, { errorNoti, infoNoti } from "../Alert";
+import CircularProgress from '@mui/material/CircularProgress';
 import { useForm } from "react-hook-form";
 import './student.css'
 
@@ -28,6 +27,7 @@ export default function StudentReg(props: any) {
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
     const [file, setFile] = useState('');
+    const [loading, setloading] = useState(false)
     const { schoolList, currentPatient, currentStudentDetails } = useSelector((state: any) => state.RootRed)
     const defaultdata = {
         "instituteid": 1,
@@ -124,15 +124,16 @@ export default function StudentReg(props: any) {
         setimg(e.target.files[0])
     }
     const resetForm = () => {
-        dispatch({
-            type: 'changeCurrentPatient',
-            payload: null
-        });
+        // dispatch({
+        //     type: 'changeCurrentPatient',
+        //     payload: null
+        // });
         props.idstudent = 0
         reset()
     }
 
     const UpdatePhoto = () => {
+        setloading(true)
         console.log(currStudent)
         const myRenamedFile = new File([studentImg], `${currStudent.studname}${currStudent.class}${currStudent.father_name}.jpg`);
         console.log(studentImg)
@@ -147,19 +148,25 @@ export default function StudentReg(props: any) {
                 .then(res => {
                     console.log(res)
                     alert(res.data.message)
+                    setloading(false)
+
                 })
-                .catch(err => console.log(err))
+                .catch(err => {console.log(err);setloading(false)})
         }
         catch (e) {
             console.log(e)
+            setloading(false)
         }
     }
     const update = () => {
+        setloading(true)
         console.log(getValues(), 'get vlaues')
         Putreq('student?idstudent=' + props.idstudent, getValues())
             .then(function (response: any) {
                 if (response.status == 201) {
                     alert('Student Updated!')
+                    reset()
+                    setloading(false)
                     props.setValue(0)
                 }
                 console.log(response, "this one");
@@ -168,9 +175,12 @@ export default function StudentReg(props: any) {
             .catch(function (error: any) {
                 console.log(error);
                 alert(error.response)
+                reset()
+                setloading(false)
             });
     }
     const createStudent = async (data: any) => {
+        setloading(true)
         const myRenamedFile = new File([studentImg], `${data.studname}${data.class}${data.father_name}.jpg`);
         console.log(studentImg)
         try {
@@ -202,14 +212,17 @@ export default function StudentReg(props: any) {
             )
                 .then(function (response: any) {
                     if (response.status == 201) {
-                        alert('Student Registered!')
+                        alert('Student Registered!');
+                        reset()
+                        setloading(false)
                     }
                     console.log(response, "this one");
                 })
 
                 .catch(function (error: any) {
                     console.log(error);
-                    alert("Account not created!" + error.response)
+                    setloading(false)
+                    alert("Account not created!" + JSON.stringify(error))
                 });
         }
         catch (e) {
@@ -421,9 +434,9 @@ export default function StudentReg(props: any) {
                             <div className="text-right classrgsetting" style={{ float: 'right', textAlign: 'right' }}>
 
                                 {props.idstudent != 0 && props.idstudent !=  undefined  ?
-                                    <><button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>  Update/Upload Photo </button>
-                                        <button type="button" className="btn btn-warning btnsubmitdetails" onClick={() => update()}>  Update </button></> :
-                                    <button type="submit" className="btn btn-primary btnsubmitdetails">  Submit </button>
+                                    <><button type="button" disabled = {loading} className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>{loading ? <CircularProgress  size='14px' color="inherit" /> : 'Update/Upload Photo'}  </button>
+                                        <button type="button" disabled = {loading} className="btn btn-warning btnsubmitdetails" onClick={() => update()}> {loading ? <CircularProgress  size='14px' color="inherit" /> : 'Update'} </button></> :
+                                    <button type="submit" disabled = {loading} className="btn btn-primary btnsubmitdetails"> {loading ?  <CircularProgress size='14px' color="inherit" />  : 'Submit'} </button>
 
                                 }
                                 <button type="button" onClick={() => resetForm()} className="btn btn-success btnsx">  Reset </button>

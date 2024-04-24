@@ -23,6 +23,7 @@ const columns = [
         name: 'Email',
         selector: row => row.usermail,
         sortable: true,
+        minWidth : '220px'
     },
     {
         name: 'Phone',
@@ -58,6 +59,7 @@ const columnsForAdmin = [
         name: 'Email',
         selector: row => row.usermail,
         sortable: true,
+        minWidth :'250px'
     },
     {
         name: 'Password',

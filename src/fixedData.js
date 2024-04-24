@@ -1,8 +1,7 @@
 export const data = {
     // "baseUrl":"http://localhost:3003/",
-    "baseUrl":"https://idcardapi.alfaxsolution.in/",
-
-    // "baseUrl" : "https://idcardbackend.vercel.app/",
+    // "baseUrl":"https://idcardapi.alfaxsolution.in/",
+    "baseUrl" : "https://idcardbackend.onrender.com/",
     class : [
         "Play School",
         "Nursery",
@@ -32,5 +31,5 @@ export const colors ={
 }
 export const studentFields =[
    'instituteid','studname','rollno','enrollno','class','section','father_name',
-   'mother_name','blood_group','dob','address','pincode','gender','contactno','pic'
+   'mother_name','blood_group','dob','address','pincode','gender','contactno','pic','housecolor'
 ]
