@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import './student.css'
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { data } from '../../fixedData';
+import { data, UploadStudentImg } from '../../fixedData';
 
 import * as Aiicons from 'react-icons/ai';
 
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "../ConfirmDialog";
 import { useMemo } from 'react'
 import { BigInputdesign, Boxhtml, SmallInputdesign } from "../Boxhtml";
+import { Button } from "@mui/material";
 // import countryList from 'react-select-country-list'
 
 // import { data } from '../fixedData'
@@ -27,6 +28,9 @@ export default function StudentReg(props: any) {
     const dispatch = useDispatch()
     const [img, setimg] = useState(null)
     const [file, setFile] = useState('');
+    const [houseColor, sethouseColor] = useState('')
+    const [stream, setstream] = useState('')
+
     const [loading, setloading] = useState(false)
     const { schoolList, currentPatient, currentStudentDetails } = useSelector((state: any) => state.RootRed)
     const defaultdata = {
@@ -44,6 +48,9 @@ export default function StudentReg(props: any) {
         "pincode": "",
         "gender": "",
         "contactno": "",
+        "pic": "",
+        "housecolor" : "",
+        "stream": ""
 
     }
     const { register, handleSubmit, watch, setValue, getValues, reset, formState: { errors } } = useForm({
@@ -75,22 +82,25 @@ export default function StudentReg(props: any) {
         // let dobrecd=new Date((currentStudentDetails.dob).toString())
         // dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate()
         // console.log(dobrecd.getFullYear()+'-'+dobrecd.getMonth()+'-'+dobrecd.getDate(),'date')
-        console.log( currentStudentDetails.dob, 'dob')
+        console.log(currentStudentDetails.dob, 'dob')
         setValue("instituteid", currentStudentDetails.instituteid)
         setValue("studname", currentStudentDetails.studname)
         setValue("rollno", currentStudentDetails.rollno)
         setValue("enrollno", currentStudentDetails.enrollno)
         setValue("class", currentStudentDetails.class)
         setValue("section", currentStudentDetails.section)
+        // setValue("housecolor", currentStudentDetails.housecolor)
         setValue("father_name", currentStudentDetails.father_name)
         setValue("mother_name", currentStudentDetails.mother_name)
         setValue("blood_group", currentStudentDetails.blood_group)
-        setValue("dob",new Date(currentStudentDetails.dob +"T00:00:00").toDateString())
+        setValue("dob", currentStudentDetails.dob)
         setValue("address", currentStudentDetails.address)
         setValue("pincode", currentStudentDetails.pincode)
         setValue("gender", currentStudentDetails.gender)
         setValue("contactno", currentStudentDetails.contactno)
-        setFile(baseUrl + 'uploads/' + currentStudentDetails?.pic)
+        setFile( currentStudentDetails?.pic)
+        setValue("stream",currentStudentDetails.stream)
+        setValue("housecolor",currentStudentDetails.housecolor)
     }
     useEffect(() => {
         if (schoolList.length == 0) {
@@ -106,7 +116,7 @@ export default function StudentReg(props: any) {
                     console.log('getting student details', res)
                     if (res.data.length)
                         setStudentinForm(res.data[0])
-                        setcurrStudent(res.data[0])
+                    setcurrStudent(res.data[0])
                     dispatch({
                         type: 'setStudentDetails',
                         action: res.data[0]
@@ -128,30 +138,32 @@ export default function StudentReg(props: any) {
         //     type: 'changeCurrentPatient',
         //     payload: null
         // });
-        props.idstudent = 0
+        if (props?.idstudent) {
+            props.idstudent = 0
+        }
+        setStudentImg('')
         reset()
     }
 
-    const UpdatePhoto = () => {
+    const UpdatePhoto = async () => {
         setloading(true)
-        console.log(currStudent)
-        const myRenamedFile = new File([studentImg], `${currStudent.studname}${currStudent.class}${currStudent.father_name}.jpg`);
-        console.log(studentImg)
-        try {
-            var formData = new FormData();
-
-            formData.append("photo", myRenamedFile)
-            formData.append("data", JSON.stringify({ idstudent: props.idstudent }));
-            console.log(formData, 'formData')
-            const config = { headers: { "Content-Type": "multipart/form-data", } }
-            Putreq('studentPhoto', formData)
+        if(studentImg === ''){
+            alert('Please select any image to Upload!')
+            setloading(false)
+            return;
+        }
+        let picUrl = await UploadStudentImg(studentImg)
+        setValue("pic", picUrl)
+        let data = { idstudent: props.idstudent , pic : picUrl }
+        try {          
+            Putreq('studentPhoto', data)
                 .then(res => {
                     console.log(res)
                     alert(res.data.message)
                     setloading(false)
 
                 })
-                .catch(err => {console.log(err);setloading(false)})
+                .catch(err => { console.log(err); setloading(false) })
         }
         catch (e) {
             console.log(e)
@@ -167,7 +179,7 @@ export default function StudentReg(props: any) {
                     alert('Student Updated!')
                     reset()
                     setloading(false)
-                    props.setValue(0)
+                    // props?.setValue(0)
                 }
                 console.log(response, "this one");
             })
@@ -184,13 +196,17 @@ export default function StudentReg(props: any) {
         const myRenamedFile = new File([studentImg], `${data.studname}${data.class}${data.father_name}.jpg`);
         console.log(studentImg)
         try {
-            var formData = new FormData();
-
-            formData.append("photo", myRenamedFile)
-            formData.append("data", JSON.stringify(Object.values(data)));
-            console.log(formData, 'formData')
-            const config = { headers: { "Content-Type": "multipart/form-data", } }
-            axios.post(baseUrl + 'student', formData, config
+            if(studentImg !=''){
+                let picUrl = await UploadStudentImg(studentImg)
+                data.pic =picUrl;
+                setValue("pic", picUrl)
+            }
+            else{
+                data.pic = ''
+            }
+            
+            console.log(data, 'data to be sent')
+            axios.post(baseUrl + 'student', data
                 // {
                 //     "instituteid":data.instituteid,
                 //     "studname":data.studname,
@@ -213,6 +229,7 @@ export default function StudentReg(props: any) {
                 .then(function (response: any) {
                     if (response.status == 201) {
                         alert('Student Registered!');
+                        setStudentImg('')
                         reset()
                         setloading(false)
                     }
@@ -235,7 +252,7 @@ export default function StudentReg(props: any) {
             axios.get(baseUrl + `/rpatient/qwe123?patient_id=${patient_id}&urn=${urn}`)
                 .then(function (response: any) {
                     if (response.data) {
-                        console.log(response.data.dob,'dOb')
+                        console.log(response.data.dob, 'dOb')
                         setValue("studname", response.data.name)
                         setValue("address", response.data.patient_id)
                         setValue("blood_group", response.data.date_of_birth)
@@ -250,6 +267,8 @@ export default function StudentReg(props: any) {
                         setValue("rollno", response.data.rollno)
                         setValue("section", response.data.section)
                         setValue("pincode", response.data.pincode)
+
+
                     }
                     console.log(response);
                 })
@@ -292,7 +311,6 @@ export default function StudentReg(props: any) {
                         <input type="file" accept="image/*" className="form-control" id="education" placeholder="Select Image..."
                             onChange={fileHandle}
                         />
-                        {/* {errors. && <span className='errormsg'>Image is required</span>} */}
                     </SmallInputdesign>
 
                     {file && <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
@@ -360,9 +378,18 @@ export default function StudentReg(props: any) {
                         {errors.section && <span className='errormsg'>This field is required</span>}
                     </SmallInputdesign>
                     <SmallInputdesign>
+                        <label >Subject/Stream</label>
+                        <input className="form-control" placeholder="Subject/Stream"
+                               {...register("stream")} />
+                    </SmallInputdesign>
+                    <SmallInputdesign>
+                        <label >House Name/Color</label>
+                        <input className="form-control" placeholder="House name/color"
+                            {...register("housecolor")} />
+                    </SmallInputdesign>
+                    {/* <SmallInputdesign>
                         <label >Date of Birth</label>
 
-                        {/* <input  className="form-control"  placeholder="dateof birth..." pattern="[0-9]*" value={formDetail.age} onChange={(num) => setformDetail({ ...formDetail, "age": num.target.value.replace(/\D/, '') })} /> */}
                         <input type="date" className="form-control" placeholder="Date Of Birth"
                             {...register("dob", {
                                 required: true,
@@ -372,6 +399,12 @@ export default function StudentReg(props: any) {
                                 }
                             })} />
                         {errors.dob && <span className='errormsg'>This field is required</span>}
+                    </SmallInputdesign> */}
+                    <SmallInputdesign>
+                        <label>Date of Birth</label>
+                        <input className="form-control" id="education" placeholder="00/00/0000 or 00-00-0000"
+                            {...register("dob", { required: true })} />
+                        {errors.dob && <span className='errormsg'>Date of birth is required</span>}
                     </SmallInputdesign>
                     <SmallInputdesign>
                         <label> Gender.</label>
@@ -433,13 +466,14 @@ export default function StudentReg(props: any) {
                         <div className="col-sm-12 col-md-12 col-xs-12 text-right">
                             <div className="text-right classrgsetting" style={{ float: 'right', textAlign: 'right' }}>
 
-                                {props.idstudent != 0 && props.idstudent !=  undefined  ?
-                                    <><button type="button" disabled = {loading} className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>{loading ? <CircularProgress  size='14px' color="inherit" /> : 'Update/Upload Photo'}  </button>
-                                        <button type="button" disabled = {loading} className="btn btn-warning btnsubmitdetails" onClick={() => update()}> {loading ? <CircularProgress  size='14px' color="inherit" /> : 'Update'} </button></> :
-                                    <button type="submit" disabled = {loading} className="btn btn-primary btnsubmitdetails"> {loading ?  <CircularProgress size='14px' color="inherit" />  : 'Submit'} </button>
+                                {props.idstudent != 0 && props.idstudent != undefined ?
+                                    <>
+                                        <button type="button" disabled = {loading} className="btn btn-warning btnsubmitdetails" onClick={() => UpdatePhoto()}>{loading ? <CircularProgress  size='14px' color="inherit" /> : 'Update/Upload Photo'}  </button>
+                                        <button type="button" disabled={loading} className="btn btn-warning btnsubmitdetails" onClick={() => update()}> {loading ? <CircularProgress size='14px' color="inherit" /> : 'Update'} </button></> :
+                                    <Button variant="contained" type="submit" disabled={loading} className="btn btn-primary btnsubmitdetails"> {loading ? <CircularProgress size='14px' color="inherit" /> : 'Submit'} </Button>
 
                                 }
-                                <button type="button" onClick={() => resetForm()} className="btn btn-success btnsx">  Reset </button>
+                                <Button variant="outlined" color="warning" type="button" onClick={() => resetForm()} className="btn btn-success btnsx">  Reset </Button>
                                 {/* {location.pathname!=='/RegisterYourself/form' && <button type='button' className="btn btn-danger " onClick={() => deletePatient()} value="delete">  Delete</button>} */}
                                 {/* <button type='button' onClick={() => navigate(-1)} className="btn btn-success btnbackresult">Back</button> */}
                                 {/* <button type="submit" className="btn btn-primary btn-lg btn-block">Submit </button> */}

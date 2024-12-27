@@ -9,7 +9,7 @@ const Card = ({file,stud}:any) => {
     <div className="head-image">
     <img className = "idcardPreview" src={file}/>
     </div>
-    <img className='dp' src ={baseUrl+'uploads/'+stud?.pic}/>
+    <img className='dp' src ={stud?.pic}/>
     <p className=" idname">{stud?.studname} </p>
     <div  className='text-on-image'>
       

@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { colors, data } from '../../fixedData';
+import { colors, data, shortenPicUrl } from '../../fixedData';
 import { DeleteReq, GetReq } from '../../components/HttpReqs';
 import { useEffect, useState } from 'react';
 import { Boxhtml, SmallInputdesign } from '../../components/Boxhtml';
@@ -37,7 +37,7 @@ export default function StudentList(props) {
     const columns = [
         {
             name: 'Photo',
-            selector: row => row.pic == "" ? '' : <img className='photo' src={baseUrl + 'uploads/' + row?.pic} alt="NA" />,
+            selector: row => row.pic == "" ? '' : <img className='photo' src={row.pic} alt="NA" />,
             sortable: true,
             width: '120px'
         },
@@ -63,7 +63,7 @@ export default function StudentList(props) {
         },
         {
             name: 'dob',
-            selector: row => new Date(row.dob).getDate() + '/' + new Date(row.dob).getUTCMonth() + '/' + new Date(row.dob).getFullYear(),
+            selector: row => row.dob,//new Date(row.dob).getDate() + '/' + new Date(row.dob).getUTCMonth() + '/' + new Date(row.dob).getFullYear(),
             sortable: true,
 
         },
@@ -137,11 +137,15 @@ export default function StudentList(props) {
         // })
         getdata('1st',schoolId)
     }
-    const exportToExcel = (datahint = 'school', dat = Initialdata) => {
+    const exportToExcel =async (datahint = 'school', dat = Initialdata) => {
         let worksheet;
-        worksheet = XLSX.utils.json_to_sheet(dat);
+        console.log(dat,'data to be shown on the excel')
+        let newExceldata = dat.map((row) => {
+            return {...row, pic : shortenPicUrl(row.pic)}
+        })
+        worksheet = XLSX.utils.json_to_sheet(newExceldata);
 
-        fetchImages(dat)
+        await fetchImages(dat)
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
@@ -172,7 +176,7 @@ export default function StudentList(props) {
             const urls = data.map(r => r.pic)
 
             const promises = urls.map(url =>
-                fetch(baseUrl + 'uploads/' + url)
+                fetch(url)
                     .then(response => response.blob())
                     .catch(error => console.error('Error fetching image:', error))
             );
@@ -187,19 +191,20 @@ export default function StudentList(props) {
         setTimeout(() => {
             console.log(imageUrls, 'images')
             downloadImages(data)
-        }, 7000);
+        }, 0);
     };
+
 
     const downloadImages = (data) => {
         const zip = new JSZip();
         console.log(data)
         imageUrls.forEach((blob, index) => {
-            const fileName = `${data[index]?.pic || 'image'}`;
+            const fileName = `${shortenPicUrl(data[index]?.pic) || 'image'}`;
             zip.file(fileName, blob);
         });
 
         zip.generateAsync({ type: 'blob' }).then(content => {
-            FileSaver.saveAs(content, 'images.zip');
+            FileSaver.saveAs(content, 'class-'+classSelected +' images.zip');
         });
     };
 
